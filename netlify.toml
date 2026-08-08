@@ -1,0 +1,4 @@
+# Static site — no framework, no build step. Netlify just serves the repo root.
+[build]
+  publish = "."
+  command = ""

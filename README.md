@@ -1,95 +1,88 @@
-# Lesko Help — Call Sheets
+# Lesko Help — Your Call Sheet
 
-A member guide to building call sheets, built as a **paginated document** in
-the Lesko Help house style.
+A single-page guide for LeskoHelp members: what a call sheet is, how to get one, and
+what to do with it. Same playful playing-card design as the Grant Roadmap and
+Onboarding apps.
 
-## Contents
+Open `index.html` in a browser. No build step, no server, no dependencies.
 
-- `index.html` — the whole thing. Self-contained: all CSS and JS inline, no
-  external requests, no build step, no dependencies.
+## What's on the page
 
-## How it works
+| # | Card | What it covers |
+|---|------|----------------|
+| 01 | 📋 What a call sheet is | A list of places to phone, built from ZIP code + one problem |
+| 02 | ☝️ One problem = one call sheet | The golden rule, with a good and a bad example |
+| 03 | 🎯 Get clear before you ask | The seven questions to answer first |
+| 04 | ✍️ Let us write your request | **The tool** — see below |
+| 05 | 🗺️ Three ways to get your call sheet | Class · AI Researcher · Questions Channel |
+| 06 | ✅ What a good call sheet has | The 14 columns, asked for 25 organizations |
+| 07 | 🔍 Check it before you call | AI gets phone numbers wrong ~1 in 3 times |
+| 08 | ☎️ What to say when you call | Four questions, plus a call log |
+| 09 | 🔁 Then do it again | Repetition is the method |
+| 10 | 🔒 Keeping yourself safe | What never to post, avatars, scam red flags |
 
-The guide is 13 short pages, shown one at a time — not one long scroll.
+A **quick-jump card** sits under the header so members can go straight to what they
+need instead of scrolling, and a back-to-top button appears once they've scrolled.
 
-- **Page 01** cover
-- **Page 02** contents — eleven questions, each linking to its answer
-- **Pages 03–13** one answer per page
+## The tool — "Let us write your request for you"
 
-Navigation:
+Card 04 is interactive. A member answers the same seven questions from card 03, and the
+page builds their request in three formats, switched by tabs:
 
-| Control | What it does |
-| --- | --- |
-| Contents rows | jump to that page |
-| `☰ Contents` in the top bar | back to the index from anywhere |
-| Prev / Next at the foot | move a page, labelled with the destination |
-| `↑ Contents` / `↑ Top` | back up |
-| Floating `↑` | appears after 400px of scroll |
-| `←` `→` keys | previous / next page |
-| `Esc` | back to contents |
+- **🤖 For the AI** — the full prompt, using the team's 14-column structure, with an
+  added instruction not to invent phone numbers, emails or links
+- **💬 For the Questions Channel** — a short, tidy post
+- **🎤 To say in class** — a script with the problem / ZIP / state checklist
 
-Each page has a `#p01`…`#p13` hash, so pages are linkable and the browser
-back button works. Printing expands every page with page breaks between them.
+### The privacy guard
 
-The contents list is generated at runtime from the pages themselves, reading
-each `<article>`'s `data-q` (the question) and `data-nav` (the short label).
-Add or remove an `<article class="sheet">` and the index, the page numbering
-and the prev/next labels all follow automatically.
+Before anything can be copied, the free-text answers are checked for phone numbers,
+email addresses, Social Security numbers, street addresses and card numbers. If one
+turns up, the page says what it found and **disables the copy button** until it's
+removed. ZIP code and city are treated as safe and never flagged.
 
-## Brand
+The street check requires a capitalised street name, so everyday phrases like
+"2 bedroom apartment" or "3 new drive belts" don't trip it.
 
-Colours sampled directly from the Lesko Help document series:
+Everything runs in the member's own browser. Nothing is sent anywhere.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--cream` | `#F9F6EB` | the sheet |
-| `--band` | `#F4EBD4` | callouts, alternating table rows |
-| `--navy` | `#0E1A2A` | card borders, table headers, buttons |
-| `--ink` | `#2A3548` | body text |
-| `--red` | `#E63946` | italic serif emphasis, mono labels, numbers |
-| `--yellow` | `#FDC82F` | badges, chips, the `?` |
-| `--blue` `--green` | `#2B3FA0` `#4FA84F` | suits, tints, semantics |
+## Adding the video
 
-Card-suit tints (`--tint-blue/yellow/red/green`) fill the numbered cards, same
-as the printed documents. Serif for display with red italic emphasis, sans for
-body, mono for labels and running heads.
+The recording isn't wired up yet. When you have the URL, open `index.html`, find
+`VIDEO_URL` near the top of the `<script>` at the bottom, and paste it in:
 
-**Light only** — no dark mode, by request. The page paints its own background
-so it holds on any host.
+```js
+var VIDEO_URL = "";   // YouTube, Vimeo, Loom, Wistia or a direct .mp4
+```
 
-## The Problem Clarifier (page 06)
+Share links are converted into a player automatically. Left empty, the slot shows a
+placeholder that links through to a live Call Sheet Class, so the page never looks
+broken while you're still recording.
 
-An interactive form whose questions are the seven clarifying questions from
-page 05. Answering them generates a ready-to-paste request in three formats:
+## Links used
 
-1. **AI Researcher** — a full prompt using the team's 14-column structure,
-   plus an instruction not to invent contact details
-2. **Questions Channel** — a short post
-3. **Read out in class** — a script with the problem / ZIP / state checklist
+All buttons point at the existing spaces in the community:
 
-### Privacy guard
+- Call Sheet Classes — `/spaces/24440881/events`
+- Lesko AI Researcher — `/spaces/24461105/page`
+- Questions Channel — `/spaces/11054387/feed`
+- Call & Application Classes — `/spaces/24366189/events`
 
-The free-text fields are scanned for phone numbers, email addresses, Social
-Security numbers, street addresses and card numbers. On a hit it names what it
-found and **disables the copy button** until the text is removed. ZIP code and
-city are treated as safe and never flagged.
+## Design
 
-The street-address check requires a capitalised street name, so ordinary
-phrases like "2 bedroom apartment" or "3 new drive belts" don't trip it.
+Shared LeskoHelp house style, matching the Grant Roadmap and Onboarding apps:
 
-Everything is client-side; no data leaves the browser.
+- Paper `#faf6ec`, ink `#0e1a2b`, and the four suit colours —
+  blue `#2c3fa0`, red `#e63946`, yellow `#fdc830`, green `#4fa84f`
+- Georgia serif headings, mono labels, hard 2px borders with offset shadows,
+  cards tilted a fraction of a degree
+- Big yellow `?` marks in the background, emoji as section markers
+- Works down to small phones; respects `prefers-reduced-motion`
 
-## Editing
+## Files
 
-| Change | Where |
-| --- | --- |
-| Colours | the `:root` block at the top of `<style>` |
-| Add / remove / reorder a page | the `<article class="sheet">` elements — the index follows |
-| A page's index question | that article's `data-q` |
-| A page's prev/next label | that article's `data-nav` |
-| The 14 columns | the `#p08` table, and the `COLUMNS` string in the script |
-| Clarifier questions | the `<form id="clarifier">` markup |
-| Generated wording | `buildAI()`, `buildPost()`, `buildClass()` |
-
-Page numbers in the running feet are written into the markup; if you reorder
-pages, update the `.pg` values and the `id`s to match.
+```
+index.html     the whole app
+netlify.toml   static hosting, no build
+EMBED.md       how to put it on a Mighty Networks page
+```

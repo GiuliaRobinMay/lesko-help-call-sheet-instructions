@@ -1,1051 +1,1319 @@
 <title>Call Sheets — Lesko Help</title>
 
 <style>
-  /* ============================================================
+  /* ================================================================
      LESKO HELP — CALL SHEETS
-     Palette: warm white paper, ink, Lesko gold highlighter,
-     sage for "do", clay for "never".
-     ============================================================ */
+     Brand system taken from the Lesko Help document series:
+     cream sheet on white, navy ink, red italic serif emphasis,
+     yellow badges, card-suit accents. Light only, by design.
+     ================================================================ */
 
   :root {
-    /* light — the complete palette lives here */
-    --paper:      #FDFCF9;
-    --surface:    #FFFFFF;
-    --surface-2:  #F7F4EC;
-    --ink:        #1F1B14;
-    --ink-2:      #57503F;
-    --ink-3:      #857C67;
-    --rule:       #E4DFD1;
-    --rule-firm:  #C9C2AE;
-    --accent:     #F5B301;
-    --accent-ink: #7A5300;
-    --highlight:  rgba(245, 179, 1, 0.40);
-    --on-accent:  #1F1B14;  /* gold is bright in both themes, so this stays dark */
-    --sage:       #2F6B45;
-    --sage-bg:    #EDF4EF;
-    --clay:       #A8341F;
-    --clay-bg:    #FBEFEC;
-    --shadow:     0 1px 2px rgba(31, 27, 20, .05), 0 8px 24px -16px rgba(31, 27, 20, .25);
+    --white:       #FFFFFF;
+    --cream:       #F9F6EB;
+    --band:        #F4EBD4;
+    --navy:        #0E1A2A;
+    --ink:         #2A3548;
+    --ink-2:       #586577;
+    --ink-3:       #8A94A3;
+    --red:         #E63946;
+    --yellow:      #FDC82F;
+    --blue:        #2B3FA0;
+    --green:       #4FA84F;
 
-    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --tint-blue:   #EDF0FF;
+    --tint-yellow: #FFF4D6;
+    --tint-red:    #FDE8E9;
+    --tint-green:  #E6F4E6;
+
+    --rule:        #DFD8C4;
+    --rule-soft:   #EAE3D2;
+
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
     --sans:  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New", monospace;
 
-    --measure: 34rem;
-    --wide: 52rem;
+    --sheet-w: 46rem;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper:      #15130E;
-      --surface:    #1D1A14;
-      --surface-2:  #24211A;
-      --ink:        #F4F0E5;
-      --ink-2:      #B5AD9A;
-      --ink-3:      #8B8371;
-      --rule:       #322E25;
-      --rule-firm:  #4A4538;
-      --accent:     #FFC526;
-      --accent-ink: #FFD35C;
-      --highlight:  rgba(255, 197, 38, 0.24);
-      --on-accent:  #1F1B14;
-      --sage:       #79C795;
-      --sage-bg:    #1B2A20;
-      --clay:       #FF9078;
-      --clay-bg:    #2E1B16;
-      --shadow:     0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --paper:      #15130E;
-    --surface:    #1D1A14;
-    --surface-2:  #24211A;
-    --ink:        #F4F0E5;
-    --ink-2:      #B5AD9A;
-    --ink-3:      #8B8371;
-    --rule:       #322E25;
-    --rule-firm:  #4A4538;
-    --accent:     #FFC526;
-    --accent-ink: #FFD35C;
-    --highlight:  rgba(255, 197, 38, 0.24);
-    --on-accent:  #1F1B14;
-    --sage:       #79C795;
-    --sage-bg:    #1B2A20;
-    --clay:       #FF9078;
-    --clay-bg:    #2E1B16;
-    --shadow:     0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
-  }
-
-  /* ---------- base ---------- */
+  html { background: var(--white); }
 
   body {
-    background: var(--paper);
+    background: var(--white);
     color: var(--ink);
     font-family: var(--sans);
-    font-size: 18px;
-    line-height: 1.65;
+    font-size: 17px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
-  .page {
-    max-width: var(--wide);
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+  /* the sheet is focused on page change so screen readers land there;
+     it is not a control, so it should not draw a focus ring */
+  .sheet:focus, .sheet:focus-visible { outline: none; }
+
+  /* ---------------- top bar ---------------- */
+
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: var(--white);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar-inner {
+    max-width: var(--sheet-w);
     margin: 0 auto;
-    padding: 0 1.5rem 6rem;
-    display: flex;
+    padding: .7rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .lockup { display: flex; align-items: center; gap: .55rem; text-decoration: none; }
+  .qmark {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--blue); color: var(--yellow);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-weight: 700; font-size: .82rem;
+    flex: none;
+  }
+  .lockup .wordmark { display: flex; flex-direction: column; line-height: 1; }
+  .lockup .lesko { font-family: var(--serif); font-style: italic; color: var(--red); font-size: .95rem; }
+  .lockup .help  { font-family: var(--serif); color: var(--navy); font-size: .95rem; }
+
+  .topbar .doc-label {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-3);
+    padding-left: 1rem; border-left: 1px solid var(--rule);
+    margin-left: .35rem;
+  }
+  .topbar .spacer { flex: 1; }
+
+  .btn-contents {
+    font-family: var(--mono); font-size: .68rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    background: var(--navy); color: var(--yellow);
+    border: none; border-radius: 3px;
+    padding: .5rem .85rem; cursor: pointer;
+  }
+  .btn-contents:hover { background: var(--blue); }
+
+  .progress { height: 3px; background: var(--rule-soft); }
+  .progress-fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg,
+      var(--yellow) 0%, var(--yellow) 25%,
+      var(--red) 25%, var(--red) 50%,
+      var(--green) 50%, var(--green) 75%,
+      var(--blue) 75%, var(--blue) 100%);
+    background-size: var(--sheet-w) 100%;
+    transition: width .25s ease;
+  }
+
+  /* ---------------- the sheet ---------------- */
+
+  main { max-width: var(--sheet-w); margin: 0 auto; padding: 1.75rem 1.5rem 0; }
+
+  .sheet {
+    display: none;
+    background: var(--cream);
+    padding: 1.5rem 2.25rem 1.25rem;
     flex-direction: column;
-    gap: 4.5rem;
+    gap: 1.5rem;
+    min-height: 60vh;
+  }
+  .sheet.on { display: flex; }
+
+  .runhead {
+    display: flex; align-items: baseline; gap: 1rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .7rem;
+  }
+  .runhead .left {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .runhead .right {
+    margin-left: auto;
+    font-family: var(--serif); font-style: italic; font-size: .9rem; color: var(--red);
+    text-align: right;
   }
 
-  p, li { max-width: var(--measure); }
-
-  a { color: var(--ink); text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  a:hover { color: var(--accent-ink); }
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-
-  mark {
-    background: linear-gradient(
-      transparent 12%, var(--highlight) 12%, var(--highlight) 92%, transparent 92%);
-    color: inherit;
-    padding: 0 .12em;
-  }
-
-  strong { font-weight: 650; }
-
-  /* ---------- masthead ---------- */
-
-  .masthead {
-    padding-top: 3.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-  .eyebrow {
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .masthead h1 {
-    font-family: var(--serif);
-    font-size: clamp(2.6rem, 7vw, 4.1rem);
-    line-height: 1.04;
-    font-weight: 400;
-    letter-spacing: -.015em;
-    text-wrap: balance;
-    max-width: 16ch;
-  }
-  .standfirst {
-    font-family: var(--serif);
-    font-size: clamp(1.15rem, 2.4vw, 1.4rem);
-    line-height: 1.5;
-    color: var(--ink-2);
-    max-width: 38ch;
-  }
-  .masthead-rule {
-    height: 6px;
-    background:
-      repeating-linear-gradient(90deg, var(--accent) 0 28px, transparent 28px 36px);
-    border-radius: 3px;
-  }
-
-  /* ---------- contents ---------- */
-
-  .contents {
-    background: var(--surface-2);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 1.5rem 1.75rem;
-  }
-  .contents h2 {
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-bottom: .9rem;
-  }
-  .contents ol {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: .5rem 2rem;
-    counter-reset: toc;
-  }
-  .contents li { max-width: none; counter-increment: toc; }
-  .contents li a {
-    display: flex;
-    gap: .7rem;
-    text-decoration: none;
-    padding: .18rem 0;
-    font-size: .96rem;
-  }
-  .contents li a::before {
-    content: counter(toc, decimal-leading-zero);
-    font-family: var(--mono);
-    font-size: .78rem;
-    color: var(--accent-ink);
-    font-weight: 700;
-    padding-top: .18em;
-  }
-  .contents li a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
-
-  /* ---------- sections ---------- */
-
-  .step { display: flex; flex-direction: column; gap: 1.5rem; scroll-margin-top: 1.5rem; }
-
-  .step-head { display: flex; flex-direction: column; gap: .6rem; }
-  .step-label {
-    display: flex; align-items: center; gap: .75rem;
-    font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+  .sheet-foot {
+    margin-top: auto;
+    border-top: 1px solid var(--rule);
+    padding-top: .7rem;
+    display: flex; align-items: center; gap: 1rem;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .13em;
     text-transform: uppercase; color: var(--ink-3);
   }
-  .step-label::after {
-    content: ""; flex: 1; height: 1px; background: var(--rule-firm);
+  .sheet-foot .suit { font-size: .9rem; letter-spacing: 0; }
+  .sheet-foot .mid { flex: 1; text-align: center; }
+  .sheet-foot .pg { font-variant-numeric: tabular-nums; }
+
+  .suit-s { color: var(--blue); }
+  .suit-h { color: var(--red); }
+  .suit-d { color: var(--yellow); }
+  .suit-c { color: var(--green); }
+
+  /* ---------------- typography ---------------- */
+
+  .eyebrow {
+    display: flex; align-items: center; gap: .6rem;
+    font-family: var(--serif); font-style: italic; color: var(--red); font-size: 1rem;
   }
-  .step-head h2 {
+  .eyebrow::before {
+    content: ""; width: 1.5rem; height: 2px; background: var(--red); flex: none;
+  }
+
+  .sheet h2 {
     font-family: var(--serif);
-    font-size: clamp(1.85rem, 4.2vw, 2.5rem);
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
     line-height: 1.14;
     font-weight: 400;
-    letter-spacing: -.012em;
+    color: var(--navy);
+    letter-spacing: -.01em;
     text-wrap: balance;
-    max-width: 20ch;
   }
-  .step-kicker {
-    font-size: 1.08rem;
-    color: var(--ink-2);
-    max-width: 40ch;
-  }
+  .sheet h2 em { font-style: italic; color: var(--red); }
 
-  .step h3 {
-    font-family: var(--sans);
-    font-size: 1.02rem;
-    font-weight: 700;
-    letter-spacing: -.005em;
-    margin-top: .5rem;
-  }
-
-  .prose { display: flex; flex-direction: column; gap: 1rem; }
-
-  /* ---------- lists ---------- */
-
-  ul.ticks, ul.crosses { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
-  ul.ticks li, ul.crosses li { position: relative; padding-left: 1.9rem; }
-  ul.ticks li::before, ul.crosses li::before {
-    position: absolute; left: 0; top: .05em;
-    font-weight: 700; font-size: 1.05rem;
-  }
-  ul.ticks li::before  { content: "✓"; color: var(--sage); }
-  ul.crosses li::before { content: "✕"; color: var(--clay); }
-
-  ul.plain { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
-  ul.plain li { position: relative; padding-left: 1.4rem; }
-  ul.plain li::before {
-    content: ""; position: absolute; left: 0; top: .62em;
-    width: 7px; height: 7px; border-radius: 1px; background: var(--accent);
-  }
-
-  ol.numbered { list-style: none; counter-reset: n; display: flex; flex-direction: column; gap: .9rem; }
-  ol.numbered li { counter-increment: n; position: relative; padding-left: 2.6rem; }
-  ol.numbered li::before {
-    content: counter(n);
-    position: absolute; left: 0; top: .1em;
-    width: 1.7rem; height: 1.7rem;
-    display: grid; place-items: center;
-    background: var(--accent); color: var(--on-accent);
-    font-family: var(--mono); font-size: .82rem; font-weight: 700;
-    border-radius: 50%;
-  }
-
-  /* ---------- cards ---------- */
-
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.25rem; }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 1.4rem 1.5rem;
-    display: flex; flex-direction: column; gap: .7rem;
-    box-shadow: var(--shadow);
-  }
-  .card p, .card li { max-width: none; }
-  .card-tag {
-    font-family: var(--mono);
-    font-size: .7rem; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--accent-ink);
-  }
-  .card h3 { font-size: 1.15rem; font-weight: 700; margin: 0; line-height: 1.3; }
-  .card p { font-size: .96rem; color: var(--ink-2); }
-  .card .best-for {
-    font-size: .88rem; color: var(--ink);
-    border-top: 1px solid var(--rule); padding-top: .7rem; margin-top: auto;
-  }
-
-  /* ---------- callouts ---------- */
-
-  .note {
-    border-left: 4px solid var(--accent);
-    background: var(--surface-2);
-    padding: 1.15rem 1.4rem;
-    border-radius: 0 4px 4px 0;
-    display: flex; flex-direction: column; gap: .6rem;
-  }
-  .note.warn  { border-left-color: var(--clay); background: var(--clay-bg); }
-  .note.good  { border-left-color: var(--sage); background: var(--sage-bg); }
-  .note h3 { margin: 0; font-size: .95rem; letter-spacing: .01em; }
-  .note.warn h3 { color: var(--clay); }
-  .note.good h3 { color: var(--sage); }
-  .note p, .note li { font-size: .96rem; max-width: 42ch; }
-
-  /* ---------- the big rule ---------- */
-
-  .golden {
-    border: 2px solid var(--ink);
-    border-radius: 4px;
-    padding: 2rem;
-    display: flex; flex-direction: column; gap: 1rem;
-    background: var(--surface);
-  }
-  .golden .rule-text {
+  .sheet h3 {
     font-family: var(--serif);
-    font-size: clamp(1.5rem, 3.6vw, 2rem);
-    line-height: 1.25;
-    max-width: 24ch;
-    text-wrap: balance;
+    font-size: 1.25rem; font-weight: 400; color: var(--navy);
+    line-height: 1.3;
   }
-  .golden .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1.25rem 2rem; }
-  .golden .split > div { display: flex; flex-direction: column; gap: .5rem; }
-  .golden .split h4 {
-    font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+
+  .label {
+    font-family: var(--mono); font-size: .68rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--red);
   }
-  .golden .split .yes h4 { color: var(--sage); }
-  .golden .split .no h4  { color: var(--clay); }
-  .golden .split p, .golden .split li { font-size: .95rem; max-width: none; }
+  .label.navy { color: var(--navy); }
 
-  /* ---------- table ---------- */
+  .lede { font-size: 1.02rem; color: var(--ink); }
+  .sheet p, .sheet li { max-width: 40rem; }
+  em.rq { font-family: var(--serif); font-style: italic; color: var(--red); }
 
-  .table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }
-  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: .94rem; }
-  th, td { text-align: left; padding: .7rem 1rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .block { display: flex; flex-direction: column; gap: .85rem; }
+
+  a { color: var(--blue); text-underline-offset: 3px; }
+
+  /* ---------------- lists ---------------- */
+
+  ul.arrows, ul.ticks, ul.crosses, ul.plain {
+    list-style: none; display: flex; flex-direction: column; gap: .45rem;
+  }
+  ul.arrows li, ul.ticks li, ul.crosses li, ul.plain li {
+    position: relative; padding-left: 1.6rem;
+  }
+  ul.arrows li::before  { content: "→"; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+  ul.ticks li::before   { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  ul.crosses li::before { content: "✕"; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+  ul.plain li::before   { content: "·"; position: absolute; left: .35rem; color: var(--ink-3); font-weight: 700; }
+
+  ol.steps { list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: .8rem; }
+  ol.steps li { counter-increment: s; position: relative; padding-left: 2.4rem; }
+  ol.steps li::before {
+    content: counter(s, decimal-leading-zero);
+    position: absolute; left: 0; top: .05em;
+    font-family: var(--serif); font-style: italic; font-weight: 700;
+    color: var(--red); font-size: 1.05rem;
+  }
+
+  /* ---------------- cards ---------------- */
+
+  .stack { display: flex; flex-direction: column; gap: 1rem; }
+
+  .kard {
+    border: 2px solid var(--navy);
+    border-radius: 8px;
+    padding: 1.1rem 1.3rem;
+    display: flex; flex-direction: column; gap: .45rem;
+  }
+  .kard .num {
+    font-family: var(--serif); font-style: italic; font-weight: 700;
+    font-size: 1.6rem; color: var(--red); line-height: 1;
+  }
+  .kard h3 { font-size: 1.2rem; }
+  .kard p, .kard li { font-size: .95rem; color: var(--ink); max-width: none; }
+  .kard.blue   { background: var(--tint-blue); }
+  .kard.yellow { background: var(--tint-yellow); }
+  .kard.red    { background: var(--tint-red); }
+  .kard.green  { background: var(--tint-green); }
+
+  .chip-label {
+    align-self: flex-start;
+    font-family: var(--mono); font-size: .66rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    background: var(--yellow); color: var(--navy);
+    border: 2px solid var(--navy); border-radius: 4px;
+    padding: .3rem .7rem;
+  }
+
+  /* ---------------- callout ---------------- */
+
+  .callout {
+    border-left: 5px solid var(--yellow);
+    background: var(--band);
+    padding: 1rem 1.25rem;
+    display: flex; flex-direction: column; gap: .5rem;
+  }
+  .callout.blue { border-left-color: var(--blue); background: var(--tint-blue); }
+  .callout.red  { border-left-color: var(--red);  background: var(--tint-red); }
+  .callout.green{ border-left-color: var(--green);background: var(--tint-green); }
+  .callout p, .callout li { font-size: .95rem; max-width: none; }
+
+  /* ---------------- table ---------------- */
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--rule); }
+  table { border-collapse: collapse; width: 100%; min-width: 32rem; font-size: .9rem; }
   thead th {
-    background: var(--surface-2);
-    font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--ink-3);
-    border-bottom: 1px solid var(--rule-firm);
-    position: sticky; top: 0;
+    background: var(--navy); color: var(--cream);
+    font-family: var(--mono); font-size: .64rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    text-align: left; padding: .7rem .85rem;
   }
-  tbody tr:last-child td { border-bottom: none; }
-  td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--accent-ink); font-weight: 700; width: 3rem; }
-  td.col-name { font-weight: 650; white-space: nowrap; }
-  td.why { color: var(--ink-2); }
-
-  /* ---------- clarifier form ---------- */
-
-  .clarifier {
-    background: var(--surface);
-    border: 1px solid var(--rule-firm);
-    border-radius: 4px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
+  tbody td { padding: .6rem .85rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  tbody tr:nth-child(odd)  td { background: var(--cream); }
+  tbody tr:nth-child(even) td { background: var(--band); }
+  td.n {
+    font-family: var(--serif); font-style: italic; font-weight: 700;
+    color: var(--red); width: 2.6rem; font-variant-numeric: tabular-nums;
   }
-  .clarifier-head {
-    padding: 1.4rem 1.6rem;
-    border-bottom: 1px solid var(--rule);
-    background: var(--surface-2);
-    display: flex; flex-direction: column; gap: .4rem;
+  td.k { font-family: var(--serif); font-weight: 700; color: var(--navy); }
+  td.v { color: var(--ink); }
+  .log-tbl td { font-family: var(--mono); font-size: .78rem; }
+
+  /* ---------------- cover ---------------- */
+
+  #p01 { gap: 0; padding: 2.25rem 2.25rem 1.25rem; }
+  .cover-top { display: flex; align-items: flex-start; }
+  .cover-suits { display: flex; gap: .85rem; font-size: 1.15rem; }
+  .cover-q {
+    margin-left: auto;
+    font-family: var(--serif); font-weight: 700;
+    font-size: 5.5rem; line-height: .8; color: var(--yellow);
   }
-  .clarifier-head h3 { margin: 0; font-size: 1.2rem; }
-  .clarifier-head p { font-size: .95rem; color: var(--ink-2); max-width: 46ch; }
-
-  .fields { padding: 1.6rem; display: flex; flex-direction: column; gap: 1.6rem; }
-
-  .field { display: flex; flex-direction: column; gap: .55rem; }
-  .field > label, .field .q {
-    font-size: .98rem; font-weight: 650; line-height: 1.4;
+  .cover-mid { margin-top: 3.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .cover-tags { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .tag-solid {
+    font-family: var(--mono); font-size: .66rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    background: var(--navy); color: var(--yellow);
+    padding: .42rem .8rem;
   }
-  /* a chip is a control, not a question — keep it at chip scale */
-  .field > label.chip { font-size: .92rem; font-weight: 600; }
-  .field .hint { font-size: .86rem; color: var(--ink-3); max-width: 46ch; }
+  .tag-plain {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .cover-head { display: flex; align-items: flex-start; gap: 1.5rem; }
+  .cover-head h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(2.1rem, 7.5vw, 3.5rem);
+    line-height: 1.06; color: var(--navy); letter-spacing: -.015em;
+    max-width: 13ch;
+  }
+  .cover-head h1 em { font-style: italic; color: var(--red); }
+  .badge {
+    flex: none; margin-left: auto;
+    width: 92px; height: 92px; border-radius: 50%;
+    background: var(--yellow); border: 2px solid var(--navy);
+    display: grid; place-items: center; align-content: center;
+    text-align: center;
+  }
+  .badge .b-num { font-family: var(--serif); font-style: italic; font-weight: 700; font-size: 1.5rem; color: var(--navy); line-height: 1; }
+  .badge .b-txt { font-family: var(--mono); font-size: .5rem; font-weight: 700; letter-spacing: .08em; color: var(--navy); line-height: 1.25; margin-top: .2rem; }
+  .cover-standfirst { font-family: var(--serif); font-size: 1.1rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+  .cover-foot { margin-top: 3.5rem; padding-bottom: 2rem; display: flex; align-items: flex-end; gap: 1rem; }
+  .cover-meta {
+    margin-left: auto; text-align: right;
+    font-family: var(--mono); font-size: .64rem; letter-spacing: .11em;
+    text-transform: uppercase; color: var(--ink-2); line-height: 1.8;
+  }
 
-  .field input[type="text"], .field select, .field textarea {
-    font-family: var(--sans);
-    font-size: 1rem;
+  /* ---------------- contents ---------------- */
+
+  .toc { display: flex; flex-direction: column; }
+  .toc-row {
+    display: flex; align-items: baseline; gap: .9rem;
+    padding: .7rem .25rem;
+    border-bottom: 1px dotted var(--rule);
+    background: none; border-left: 0; border-right: 0; border-top: 0;
+    font: inherit; text-align: left; width: 100%; cursor: pointer;
     color: var(--ink);
-    background: var(--paper);
-    border: 1px solid var(--rule-firm);
-    border-radius: 3px;
-    padding: .6rem .75rem;
-    width: 100%;
-    max-width: 30rem;
   }
-  .field textarea { min-height: 4.5rem; resize: vertical; max-width: 36rem; line-height: 1.5; }
-  .field input::placeholder, .field textarea::placeholder { color: var(--ink-3); }
+  .toc-row:hover { background: var(--band); }
+  .toc-row .t-num {
+    font-family: var(--mono); font-size: .72rem; font-weight: 700;
+    color: var(--red); flex: none; width: 1.6rem;
+  }
+  .toc-row .t-q { font-family: var(--serif); font-size: 1.05rem; color: var(--navy); }
+  .toc-row .t-pg {
+    margin-left: auto; flex: none;
+    font-family: var(--mono); font-size: .72rem; color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .toc-row:hover .t-q { color: var(--red); }
 
-  .row { display: flex; flex-wrap: wrap; gap: 1.6rem; }
-  .row .field { flex: 1 1 12rem; }
+  .suitbar { display: flex; height: 5px; }
+  .suitbar span { flex: 1; }
+  .suitbar .y { background: var(--yellow); }
+  .suitbar .r { background: var(--red); }
+  .suitbar .g { background: var(--green); }
+  .suitbar .b { background: var(--blue); }
 
-  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  /* ---------------- pager ---------------- */
+
+  .pager {
+    max-width: var(--sheet-w);
+    margin: 0 auto;
+    padding: 1rem 1.5rem 4rem;
+    display: flex; align-items: stretch; gap: .6rem;
+  }
+  .pg-btn {
+    font-family: var(--sans); font-size: .82rem;
+    background: var(--white); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 4px;
+    padding: .6rem .9rem; cursor: pointer;
+    display: flex; flex-direction: column; gap: .1rem;
+    text-align: left; flex: 1 1 0; min-width: 0;
+  }
+  .pg-btn:hover:not([disabled]) { border-color: var(--navy); background: var(--band); }
+  .pg-btn[disabled] { opacity: .35; cursor: not-allowed; }
+  .pg-btn .dir {
+    font-family: var(--mono); font-size: .6rem; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--red);
+  }
+  .pg-btn .to { color: var(--navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pg-btn.next { text-align: right; }
+  .pg-btn.up {
+    flex: 0 0 auto; align-items: center; justify-content: center;
+    background: var(--navy); border-color: var(--navy); color: var(--yellow);
+    font-family: var(--mono); font-size: .66rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: .6rem 1rem;
+  }
+  .pg-btn.up:hover { background: var(--blue); border-color: var(--blue); }
+
+  .to-top {
+    position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 50;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: var(--yellow);
+    border: 2px solid var(--yellow);
+    font-size: 1.1rem; cursor: pointer;
+    display: none; place-items: center;
+  }
+  .to-top.on { display: grid; }
+  .to-top:hover { background: var(--red); border-color: var(--navy); color: var(--white); }
+
+  /* ---------------- clarifier ---------------- */
+
+  .form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  .field > .q, .field > label:not(.chip) { font-size: .95rem; font-weight: 650; color: var(--navy); line-height: 1.4; }
+  .field .hint { font-size: .82rem; color: var(--ink-2); max-width: 44ch; }
+  .field input[type="text"], .field select, .field textarea {
+    font-family: var(--sans); font-size: .95rem; color: var(--ink);
+    background: var(--white); border: 1px solid var(--ink-3); border-radius: 3px;
+    padding: .5rem .65rem; width: 100%; max-width: 28rem;
+  }
+  .field textarea { min-height: 4rem; resize: vertical; max-width: 34rem; line-height: 1.5; }
+  .duo { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+  .duo .field { flex: 1 1 11rem; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; }
   .chip {
-    display: inline-flex; align-items: center; gap: .45rem;
-    border: 1px solid var(--rule-firm);
-    border-radius: 999px;
-    padding: .38rem .85rem;
-    font-size: .9rem;
-    cursor: pointer;
-    background: var(--paper);
-    user-select: none;
+    display: inline-flex; align-items: center; gap: .4rem;
+    border: 1px solid var(--ink-3); border-radius: 999px;
+    padding: .3rem .7rem; font-size: .85rem; cursor: pointer;
+    background: var(--white); user-select: none; color: var(--ink);
   }
-  .chip input { accent-color: var(--accent); margin: 0; }
-  .chip:hover { border-color: var(--accent); }
-  .chip:has(input:checked) { background: var(--highlight); border-color: var(--accent); font-weight: 600; }
-  .chip:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-  /* ---------- privacy guard ---------- */
+  .chip input { accent-color: var(--blue); margin: 0; }
+  .chip:hover { border-color: var(--blue); }
+  .chip:has(input:checked) { background: var(--tint-yellow); border-color: var(--navy); font-weight: 600; }
 
   .guard {
-    display: none;
-    margin: 0 1.6rem;
-    border-left: 4px solid var(--clay);
-    background: var(--clay-bg);
-    padding: 1rem 1.25rem;
-    border-radius: 0 4px 4px 0;
-    flex-direction: column; gap: .4rem;
+    display: none; flex-direction: column; gap: .35rem;
+    border-left: 5px solid var(--red); background: var(--tint-red);
+    padding: .9rem 1.15rem;
   }
   .guard.on { display: flex; }
-  .guard strong { color: var(--clay); }
-  .guard p, .guard li { font-size: .93rem; max-width: none; }
-  .guard ul { list-style: none; display: flex; flex-direction: column; gap: .25rem; }
-  .guard ul li::before { content: "• "; color: var(--clay); }
+  .guard p, .guard li { font-size: .9rem; max-width: none; }
+  .guard ul { list-style: none; display: flex; flex-direction: column; gap: .2rem; }
+  .guard ul li::before { content: "✕ "; color: var(--red); font-weight: 700; }
 
-  /* ---------- output ---------- */
-
-  .output { border-top: 1px solid var(--rule); background: var(--surface-2); }
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 0; border-bottom: 1px solid var(--rule); }
   .tab {
-    font-family: var(--sans);
-    font-size: .9rem; font-weight: 650;
-    padding: .85rem 1.2rem;
-    background: none; border: none; cursor: pointer;
-    color: var(--ink-3);
-    border-bottom: 3px solid transparent;
-    margin-bottom: -1px;
+    font-family: var(--mono); font-size: .66rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: .6rem .85rem; background: none; border: none; cursor: pointer;
+    color: var(--ink-2); border-bottom: 3px solid transparent; margin-bottom: -1px;
   }
-  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--navy); border-bottom-color: var(--red); }
+  .tab:hover { color: var(--navy); }
 
-  .output-body { padding: 1.4rem 1.6rem 1.6rem; display: flex; flex-direction: column; gap: 1rem; }
   pre.result {
-    font-family: var(--mono);
-    font-size: .84rem;
-    line-height: 1.6;
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    padding: 1.1rem 1.2rem;
-    white-space: pre-wrap;
-    word-break: break-word;
-    max-height: 26rem;
-    overflow-y: auto;
-    color: var(--ink);
+    font-family: var(--mono); font-size: .76rem; line-height: 1.6;
+    background: var(--white); border: 1px solid var(--rule);
+    padding: .9rem 1rem; white-space: pre-wrap; word-break: break-word;
+    max-height: 22rem; overflow-y: auto; color: var(--ink);
   }
-  .actions { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+  .actions { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
   .btn {
-    font-family: var(--sans); font-size: .95rem; font-weight: 650;
-    padding: .65rem 1.3rem;
-    border-radius: 3px; border: 1px solid var(--ink);
-    background: var(--ink); color: var(--paper);
+    font-family: var(--mono); font-size: .68rem; font-weight: 700;
+    letter-spacing: .11em; text-transform: uppercase;
+    padding: .6rem 1rem; border-radius: 3px;
+    border: 2px solid var(--navy); background: var(--navy); color: var(--yellow);
     cursor: pointer;
   }
-  .btn:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn:hover:not([disabled]) { background: var(--blue); border-color: var(--blue); }
   .btn[disabled] { opacity: .4; cursor: not-allowed; }
-  .btn[disabled]:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-  .btn.ghost { background: none; color: var(--ink); }
-  .btn.ghost:hover { background: var(--highlight); border-color: var(--accent); color: var(--ink); }
-  .action-msg { font-size: .9rem; color: var(--sage); font-weight: 600; }
+  .btn.ghost { background: var(--white); color: var(--navy); }
+  .btn.ghost:hover { background: var(--band); }
+  .msg { font-family: var(--mono); font-size: .68rem; color: var(--green); font-weight: 700; letter-spacing: .06em; }
 
-  /* ---------- call log ---------- */
+  /* ---------------- responsive ---------------- */
 
-  .log-demo { font-family: var(--mono); font-size: .82rem; }
-  .log-demo td, .log-demo th { padding: .55rem .9rem; }
-
-  /* ---------- footer ---------- */
-
-  .disclaimer {
-    border-top: 3px solid var(--ink);
-    padding-top: 2rem;
-    display: flex; flex-direction: column; gap: 1rem;
-  }
-  .disclaimer h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; }
-  .disclaimer p { font-size: .95rem; color: var(--ink-2); max-width: 46ch; }
-  .sign-off {
-    font-family: var(--serif);
-    font-size: 1.25rem;
-    color: var(--ink);
-    padding-top: .5rem;
+  @media (max-width: 40rem) {
+    body { font-size: 16px; }
+    main { padding: 1rem 0 0; }
+    .sheet { padding: 1.1rem 1.15rem 1rem; }
+    #p01 { padding: 1.5rem 1.15rem 1rem; }
+    .cover-q { font-size: 3.5rem; }
+    .cover-head { flex-direction: column; gap: 1rem; }
+    .badge { margin-left: 0; width: 74px; height: 74px; }
+    .cover-mid, .cover-foot { margin-top: 2rem; }
+    .pager { padding: .8rem 1rem 3.5rem; flex-wrap: wrap; }
+    .pg-btn { flex: 1 1 8rem; }
+    .pg-btn.up { flex: 1 1 100%; order: -1; }
+    .toc-row .t-q { font-size: .98rem; }
+    .topbar .doc-label { display: none; }
   }
 
-  .sources { font-size: .86rem; color: var(--ink-3); }
-  .sources a { color: var(--ink-3); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-  }
-
-  @media (max-width: 34rem) {
-    body { font-size: 17px; }
-    .page { padding: 0 1.1rem 4rem; gap: 3.5rem; }
-    .fields, .output-body { padding: 1.2rem; }
-    .guard { margin: 0 1.2rem; }
-    .golden { padding: 1.4rem; }
+  @media print {
+    .topbar, .pager, .to-top, .progress { display: none !important; }
+    .sheet { display: flex !important; page-break-after: always; min-height: auto; }
+    main { max-width: none; padding: 0; }
   }
 </style>
 
-<div class="page">
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="lockup" href="#p02">
+      <span class="qmark">?</span>
+      <span class="wordmark"><span class="lesko">Lesko</span><span class="help">Help</span></span>
+    </a>
+    <span class="doc-label">Member Guide · Call Sheets</span>
+    <span class="spacer"></span>
+    <button type="button" class="btn-contents" id="btn-toc">☰ Contents</button>
+  </div>
+  <div class="progress"><div class="progress-fill" id="pf"></div></div>
+</header>
 
-  <!-- ============ MASTHEAD ============ -->
-  <header class="masthead">
-    <div class="eyebrow">Lesko Help · Member Guide</div>
-    <h1>How to build a call sheet that actually gets you money</h1>
-    <div class="masthead-rule"></div>
-    <p class="standfirst">A call sheet is a list of the offices and organizations near you that hand out grants and financial help — with the phone number to reach each one. It is the single most important tool in this community. This page shows you how to get a good one, and what to do with it.</p>
-  </header>
+<main id="doc">
 
-  <!-- ============ CONTENTS ============ -->
-  <nav class="contents" aria-label="Contents">
-    <h2>What's on this page</h2>
-    <ol>
-      <li><a href="#what">What a call sheet is</a></li>
-      <li><a href="#one-problem">The one rule that changes everything</a></li>
-      <li><a href="#step-1">Step 1 — Get clear on your problem</a></li>
-      <li><a href="#step-2">Step 2 — Get your call sheet</a></li>
-      <li><a href="#columns">What a complete call sheet contains</a></li>
-      <li><a href="#step-3">Step 3 — Check it before you call</a></li>
-      <li><a href="#step-4">Step 4 — Work the list</a></li>
-      <li><a href="#step-5">Step 5 — Do it again</a></li>
-      <li><a href="#privacy">Protecting yourself</a></li>
-      <li><a href="#bookmarks">Finding your questions again</a></li>
-    </ol>
-  </nav>
-
-  <!-- ============ WHAT IT IS ============ -->
-  <section class="step" id="what">
-    <div class="step-head">
-      <div class="step-label">Start here</div>
-      <h2>What a call sheet is</h2>
+  <!-- ==================== 01 COVER ==================== -->
+  <article class="sheet" id="p01" data-nav="Cover" data-q="Cover">
+    <div class="cover-top">
+      <div class="cover-suits">
+        <span class="suit-s">♠</span><span class="suit-h">♥</span><span class="suit-d">♦</span><span class="suit-c">♣</span>
+      </div>
+      <div class="cover-q">?</div>
     </div>
-    <div class="prose">
-      <p>A call sheet is a list of <strong>addresses and phone numbers of places you can contact to find grants and financial help</strong>. It is always built from two things:</p>
-      <ul class="plain">
-        <li><strong>Where you live</strong> — your ZIP code and your city and state. Almost all help is local. A program in the next county over may not be able to touch your case.</li>
-        <li><strong>What you need</strong> — the specific problem you want money for.</li>
+
+    <div class="cover-mid">
+      <div class="cover-tags">
+        <span class="tag-solid">Member Guide</span>
+        <span class="tag-plain">Call Sheets · How to build one</span>
+      </div>
+
+      <div class="cover-head">
+        <h1>How to build a <em>call sheet</em> that gets you money.</h1>
+        <div class="badge">
+          <div class="b-num">01</div>
+          <div class="b-txt">CALL<br>SHEETS</div>
+        </div>
+      </div>
+
+      <p class="cover-standfirst">A call sheet is the list of offices and organizations near you that hand out grants and financial help — with the phone number for each one. It is the most important tool in this community. This guide shows you how to get a good one, and what to do with it.</p>
+    </div>
+
+    <div class="cover-foot">
+      <a class="lockup" href="#p02">
+        <span class="qmark">?</span>
+        <span class="wordmark"><span class="lesko">Lesko</span><span class="help">Help</span></span>
+      </a>
+      <div class="cover-meta">
+        For every member<br>
+        Eleven short pages<br>
+        Start at the contents
+      </div>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-d">♦</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">01</span>
+    </div>
+  </article>
+
+  <!-- ==================== 02 CONTENTS ==================== -->
+  <article class="sheet" id="p02" data-nav="Contents" data-q="Contents">
+    <div class="runhead">
+      <span class="left">Lesko Help · Call Sheets</span>
+      <span class="right">What would you like to know?</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">In this guide</div>
+      <h2>Pick your question. <em>Go straight there.</em></h2>
+      <p class="lede">Every answer is one short page. Click a question below, and use the buttons at the bottom of each page to move on or come back here.</p>
+    </div>
+
+    <div class="toc" id="toc"></div>
+
+    <div class="suitbar"><span class="y"></span><span class="r"></span><span class="g"></span><span class="b"></span></div>
+
+    <div class="callout">
+      <div class="label navy">Before you read</div>
+      <p>If you only have five minutes, read <em class="rq">page 04</em> — one problem, one call sheet. It is the single rule that decides whether your list is any good.</p>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-s">♠</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">02</span>
+    </div>
+  </article>
+
+  <!-- ==================== 03 WHAT IT IS ==================== -->
+  <article class="sheet" id="p03" data-nav="What a call sheet is" data-q="What is a call sheet, and why does it matter?">
+    <div class="runhead">
+      <span class="left">01 · What it is</span>
+      <span class="right">The foundation</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">The basics</div>
+      <h2>A list of places to <em>phone.</em></h2>
+      <p class="lede">A call sheet is a list of addresses and phone numbers of organizations you can contact to find grants and financial help. It is built from two things, and only two things.</p>
+    </div>
+
+    <div class="stack">
+      <div class="kard blue">
+        <div class="num">01</div>
+        <h3>Where you live</h3>
+        <p>Your ZIP code, your city and your state. Almost all of this money is local — a program in the next county cannot help you, no matter how good it sounds.</p>
+      </div>
+      <div class="kard yellow">
+        <div class="num">02</div>
+        <h3>What you need</h3>
+        <p>The one specific problem you want money for. Not your whole life — one problem.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="label">Why this beats searching online</div>
+      <p>Most of this money is never advertised. It sits with a county office, a community action agency, a hospital foundation, a utility hardship fund, a church coalition — places that run no ads and never appear on page one of a search engine. <strong>They give it out to the people who call and ask.</strong></p>
+      <p>A call sheet turns "I don't know where to start" into twenty-five phone numbers. That is the whole trick.</p>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-h">♥</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">03</span>
+    </div>
+  </article>
+
+  <!-- ==================== 04 GOLDEN RULE ==================== -->
+  <article class="sheet" id="p04" data-nav="One problem, one sheet" data-q="Why one problem per call sheet?">
+    <div class="runhead">
+      <span class="left">02 · The golden rule</span>
+      <span class="right">Never combine</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">The one rule</div>
+      <h2>One problem. <em>One call sheet.</em></h2>
+      <p class="lede">It is tempting to ask for everything at once — the rent, the car, the medical bills, the business idea. Don't.</p>
+      <p>A combined list gives you twenty-five organizations that are each a weak match for something. Four separate lists give you a hundred organizations that are each a strong match for one thing.</p>
+    </div>
+
+    <div class="stack">
+      <div class="kard green">
+        <div class="label navy">Do this — four separate sheets</div>
+        <ul class="ticks">
+          <li>Help paying rent and utilities in Toledo, OH</li>
+          <li>Car repair assistance in Toledo, OH</li>
+          <li>Medical bill assistance in Toledo, OH</li>
+          <li>Startup funding for a home bakery in Toledo, OH</li>
+        </ul>
+      </div>
+      <div class="kard red">
+        <div class="label navy">Not this — one combined sheet</div>
+        <ul class="crosses">
+          <li>"Rent, my car, my medical bills and my business idea in Toledo, OH"</li>
+        </ul>
+        <p>You will get a shallow, generic list — and you will not know which number to call about what.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="label">More than one problem? Good.</div>
+      <p>Make more than one call sheet. There is <strong>no limit</strong>, and each one takes minutes to request. Members with four sheets find four times as much.</p>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-d">♦</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">04</span>
+    </div>
+  </article>
+
+  <!-- ==================== 05 GET CLEAR ==================== -->
+  <article class="sheet" id="p05" data-nav="Get clear first" data-q="How do I get clear on what to ask for?">
+    <div class="runhead">
+      <span class="left">03 · Getting clear</span>
+      <span class="right">Vague in, vague out</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Before you ask</div>
+      <h2>Know exactly <em>what you're asking for.</em></h2>
+      <p class="lede">This is the step members skip, and it is the step that decides whether your call sheet is worth anything. A vague request produces a vague list.</p>
+      <p>Answer these seven questions for yourself before you join a class, open the AI Researcher, or post in the Questions Channel.</p>
+    </div>
+
+    <div class="kard blue">
+      <span class="chip-label">The seven questions</span>
+      <ul class="arrows">
+        <li>Which city and state do you need help in?</li>
+        <li>What is your ZIP code?</li>
+        <li>What is the <strong>one</strong> problem this sheet is for?</li>
+        <li>If someone handed you the money tomorrow, <strong>what exactly would it pay for?</strong></li>
+        <li>Who is it for — you, your household, your business?</li>
+        <li>Which of these describe you: veteran, senior, disabled, single parent, low income, student, caregiver, rural?</li>
+        <li>Roughly how much money would solve it?</li>
       </ul>
-      <p>Put those two things together and you get a page of real organizations, with real phone numbers, that have money for people in your situation. Then you pick up the phone.</p>
-
-      <div class="note">
-        <h3>Why this matters more than searching online</h3>
-        <p>Most of this money is never advertised. It sits with a county office, a community action agency, a hospital foundation, a utility hardship fund, a church coalition — places that do not run ads and do not appear on page one of a search engine. <mark>They give it out to the people who call and ask.</mark></p>
-        <p>A call sheet turns "I don't know where to start" into a list of twenty-five phone numbers. That is the whole trick.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ THE GOLDEN RULE ============ -->
-  <section class="step" id="one-problem">
-    <div class="step-head">
-      <div class="step-label">The golden rule</div>
-      <h2>One problem, one call sheet</h2>
     </div>
 
-    <div class="golden">
-      <p class="rule-text">Never combine several problems into one list. Make a separate call sheet for each problem.</p>
-      <p>It is tempting to ask for everything at once — rent, the car, the medical bills, the business idea. Don't. A combined list gives you twenty-five organizations that are each a weak match for something. Four separate lists give you a hundred organizations that are each a strong match for one thing.</p>
-      <div class="split">
-        <div class="yes">
-          <h4>Do this</h4>
-          <ul class="ticks">
-            <li>Sheet 1 — Help paying rent and utilities in Toledo, OH</li>
-            <li>Sheet 2 — Car repair assistance in Toledo, OH</li>
-            <li>Sheet 3 — Startup funding for a home bakery in Toledo, OH</li>
-          </ul>
-        </div>
-        <div class="no">
-          <h4>Not this</h4>
-          <ul class="crosses">
-            <li>One sheet for "rent, my car, my medical bills and my business idea in Toledo, OH"</li>
-          </ul>
-          <p>You will get a shallow, generic list — and you will not know which number to call about what.</p>
-        </div>
-      </div>
-      <p><strong>Have more than one problem? Good.</strong> Make more than one call sheet. There is no limit, and each one takes minutes to request.</p>
-    </div>
-  </section>
-
-  <!-- ============ STEP 1 — CLARIFY ============ -->
-  <section class="step" id="step-1">
-    <div class="step-head">
-      <div class="step-label">Step 1</div>
-      <h2>Get crystal clear on what you're asking for</h2>
-      <p class="step-kicker">This is the step members skip, and it is the step that decides whether your call sheet is worth anything. <mark>A vague request produces a vague list.</mark></p>
-    </div>
-
-    <div class="prose">
-      <p>Before you join a class, open the AI Researcher, or post in the Questions Channel, answer these questions for yourself. If you can answer all of them in one or two sentences each, you are ready.</p>
-    </div>
-
-    <div class="clarifier">
-      <div class="clarifier-head">
-        <h3>Problem Clarifier</h3>
-        <p>Answer the questions below. As you do, this builds the exact wording you can paste into the AI Researcher, post in the Questions Channel, or read out in a class. Nothing you type here leaves your device.</p>
-      </div>
-
-      <form class="fields" id="clarifier" autocomplete="off">
-
-        <div class="row">
-          <div class="field">
-            <label for="f-city">Which city and state do you need help in?</label>
-            <div class="hint">The place where you will actually receive the help.</div>
-            <input type="text" id="f-city" placeholder="Toledo, OH">
-          </div>
-          <div class="field">
-            <label for="f-zip">What is your ZIP code?</label>
-            <div class="hint">Five digits. This is safe to share — it does not identify you.</div>
-            <input type="text" id="f-zip" inputmode="numeric" maxlength="10" placeholder="43604">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="f-topic">What is the <em>one</em> problem this sheet is for?</label>
-          <div class="hint">One only. If you have others, come back and build a second sheet.</div>
-          <select id="f-topic">
-            <option value="">Choose one…</option>
-            <option>paying rent or avoiding eviction</option>
-            <option>paying utility bills — electric, gas, water</option>
-            <option>buying or repairing a car, or getting transportation</option>
-            <option>paying medical or dental bills</option>
-            <option>getting food and groceries</option>
-            <option>paying off debt</option>
-            <option>home repairs or making a home accessible</option>
-            <option>buying a first home or a down payment</option>
-            <option>starting a small business</option>
-            <option>growing an existing small business</option>
-            <option>paying for school, training or a certification</option>
-            <option>childcare or help raising a child</option>
-            <option>free legal help</option>
-            <option>help for a disability</option>
-            <option>help for a veteran</option>
-            <option>help for a senior</option>
-            <option>funding for a non-profit organization</option>
-            <option value="__other">something else — I'll describe it</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="f-detail">Say it in one sentence: if someone handed you the money tomorrow, what exactly would it pay for?</label>
-          <div class="hint">Be concrete. "Two months of back rent, about $2,400" beats "financial help." Do not put your name, address, phone number or email here.</div>
-          <textarea id="f-detail" placeholder="Two months of back rent so I don't get evicted, roughly $2,400."></textarea>
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="f-who">Who is this for?</label>
-            <select id="f-who">
-              <option value="myself">Myself</option>
-              <option value="myself and my household">Myself and my household</option>
-              <option value="my spouse or partner">My spouse or partner</option>
-              <option value="my child">My child</option>
-              <option value="my parent or an elder I care for">My parent or an elder I care for</option>
-              <option value="a friend I am helping">A friend I am helping</option>
-              <option value="my small business">My small business</option>
-              <option value="my non-profit organization">My non-profit organization</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-when">How soon do you need it?</label>
-            <select id="f-when">
-              <option value="">No particular deadline</option>
-              <option value="This is urgent — I need help within the next 30 days, so please flag any emergency or same-week programs.">Urgent — within 30 days</option>
-              <option value="I need help within the next two to three months.">Within a few months</option>
-              <option value="I am planning ahead and can wait for programs with longer application cycles.">Planning ahead</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="q" id="qual-label">Which of these describe your situation?</div>
-          <div class="hint">Tick everything that applies. Each one unlocks whole categories of funding that are closed to everyone else — this is where most members leave money on the table.</div>
-          <div class="chips" role="group" aria-labelledby="qual-label" id="f-quals">
-            <label class="chip"><input type="checkbox" value="a veteran"> Veteran</label>
-            <label class="chip"><input type="checkbox" value="a senior aged 60 or over"> Senior 60+</label>
-            <label class="chip"><input type="checkbox" value="living with a disability"> Disability</label>
-            <label class="chip"><input type="checkbox" value="a single parent"> Single parent</label>
-            <label class="chip"><input type="checkbox" value="a low-income household"> Low income</label>
-            <label class="chip"><input type="checkbox" value="unemployed or recently laid off"> Unemployed</label>
-            <label class="chip"><input type="checkbox" value="a student or in job training"> Student</label>
-            <label class="chip"><input type="checkbox" value="a caregiver for a family member"> Caregiver</label>
-            <label class="chip"><input type="checkbox" value="a cancer patient or survivor"> Cancer patient / survivor</label>
-            <label class="chip"><input type="checkbox" value="facing a medical crisis"> Medical crisis</label>
-            <label class="chip"><input type="checkbox" value="a survivor of domestic violence"> DV survivor</label>
-            <label class="chip"><input type="checkbox" value="currently or formerly homeless"> Housing crisis</label>
-            <label class="chip"><input type="checkbox" value="a member of a minority group"> Minority</label>
-            <label class="chip"><input type="checkbox" value="a woman-owned business"> Woman-owned business</label>
-            <label class="chip"><input type="checkbox" value="a member of a tribal nation"> Tribal member</label>
-            <label class="chip"><input type="checkbox" value="living in a rural area"> Rural</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="f-amount">Roughly how much money would solve this? <span style="font-weight:400;color:var(--ink-3)">(optional)</span></label>
-          <input type="text" id="f-amount" placeholder="$2,400">
-        </div>
-
-        <div class="field">
-          <label class="chip" style="align-self:flex-start">
-            <input type="checkbox" id="f-sheet" checked>
-            Format it so I can paste it straight into a Google Sheet
-          </label>
-        </div>
-      </form>
-
-      <div class="guard" id="guard" role="alert" aria-live="polite">
-        <strong>Stop — take this out before you share it</strong>
-        <p>We found something in your answers that could identify you. Anything you post in a class or the Questions Channel is visible to other members.</p>
-        <ul id="guard-list"></ul>
-        <p>Remove it and the copy button will unlock. Organizations will ask for these details later, on the phone, in private — never here.</p>
-      </div>
-
-      <div class="output">
-        <div class="tabs" role="tablist" aria-label="Choose a format">
-          <button type="button" class="tab" role="tab" id="tab-ai" aria-controls="panel-out" aria-selected="true" data-mode="ai">For the AI Researcher</button>
-          <button type="button" class="tab" role="tab" id="tab-post" aria-controls="panel-out" aria-selected="false" data-mode="post">For the Questions Channel</button>
-          <button type="button" class="tab" role="tab" id="tab-class" aria-controls="panel-out" aria-selected="false" data-mode="class">To read out in class</button>
-        </div>
-        <div class="output-body" id="panel-out" role="tabpanel" aria-labelledby="tab-ai">
-          <pre class="result" id="result">Fill in the questions above and your request will appear here.</pre>
-          <div class="actions">
-            <button type="button" class="btn" id="copy">Copy this</button>
-            <button type="button" class="btn ghost" id="reset">Start over</button>
-            <span class="action-msg" id="msg" role="status" aria-live="polite"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="note good">
-      <h3>Still not sure what to ask for?</h3>
-      <p>Ask yourself these three questions. The answer to any one of them is a good call sheet.</p>
+    <div class="callout green">
+      <div class="label navy">Still not sure? Try these three</div>
       <ul class="plain">
         <li><strong>What bill is keeping you up at night?</strong> That is your first sheet.</li>
         <li><strong>What would change your life in six months?</strong> A working car, a certification, a business licence. That is your second sheet.</li>
         <li><strong>What do you keep saying no to because you can't afford it?</strong> Dental work, a repair, a move. That is your third sheet.</li>
       </ul>
-      <p>Bring the answer to a class exactly as you wrote it. Our grant coaches would much rather refine a specific request than guess at a vague one.</p>
-    </div>
-  </section>
-
-  <!-- ============ STEP 2 — THREE WAYS ============ -->
-  <section class="step" id="step-2">
-    <div class="step-head">
-      <div class="step-label">Step 2</div>
-      <h2>Three ways to get your call sheet</h2>
-      <p class="step-kicker">These are not alternatives to choose between. <mark>Try all three.</mark> Each one finds organizations the others miss, and members who use all three end up with the deepest lists.</p>
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <div class="card-tag">Way one</div>
+    <p>Bring your answer to a class exactly as you wrote it. Our grant coaches would far rather sharpen a specific request than guess at a vague one.</p>
+
+    <div class="sheet-foot">
+      <span class="suit suit-c">♣</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">05</span>
+    </div>
+  </article>
+
+  <!-- ==================== 06 CLARIFIER ==================== -->
+  <article class="sheet" id="p06" data-nav="The Problem Clarifier" data-q="Can something write my request for me?">
+    <div class="runhead">
+      <span class="left">04 · The Problem Clarifier</span>
+      <span class="right">Answer seven, get your words</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Do it here</div>
+      <h2>Answer the questions. <em>We'll write it for you.</em></h2>
+      <p class="lede">Fill this in and it builds the exact wording to paste into the AI Researcher, post in the Questions Channel, or read out in a class. Nothing you type leaves your device.</p>
+    </div>
+
+    <form class="form" id="clarifier" autocomplete="off">
+      <div class="duo">
+        <div class="field">
+          <label for="f-city">Which city and state?</label>
+          <div class="hint">Where you will actually receive the help.</div>
+          <input type="text" id="f-city" placeholder="Toledo, OH">
+        </div>
+        <div class="field">
+          <label for="f-zip">Your ZIP code</label>
+          <div class="hint">Safe to share — it does not identify you.</div>
+          <input type="text" id="f-zip" inputmode="numeric" maxlength="10" placeholder="43604">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-topic">The <strong>one</strong> problem this sheet is for</label>
+        <select id="f-topic">
+          <option value="">Choose one…</option>
+          <option>paying rent or avoiding eviction</option>
+          <option>paying utility bills — electric, gas, water</option>
+          <option>buying or repairing a car, or getting transportation</option>
+          <option>paying medical or dental bills</option>
+          <option>getting food and groceries</option>
+          <option>paying off debt</option>
+          <option>home repairs or making a home accessible</option>
+          <option>buying a first home or a down payment</option>
+          <option>starting a small business</option>
+          <option>growing an existing small business</option>
+          <option>paying for school, training or a certification</option>
+          <option>childcare or help raising a child</option>
+          <option>free legal help</option>
+          <option>help for a disability</option>
+          <option>help for a veteran</option>
+          <option>help for a senior</option>
+          <option>funding for a non-profit organization</option>
+          <option value="__other">something else — I'll describe it</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="f-detail">If someone handed you the money tomorrow, what exactly would it pay for?</label>
+        <div class="hint">Be concrete. Never put your name, address, phone number or email here.</div>
+        <textarea id="f-detail" placeholder="Two months of back rent so I don't get evicted, roughly $2,400."></textarea>
+      </div>
+
+      <div class="duo">
+        <div class="field">
+          <label for="f-who">Who is this for?</label>
+          <select id="f-who">
+            <option value="myself">Myself</option>
+            <option value="myself and my household">Myself and my household</option>
+            <option value="my spouse or partner">My spouse or partner</option>
+            <option value="my child">My child</option>
+            <option value="my parent or an elder I care for">My parent or an elder I care for</option>
+            <option value="a friend I am helping">A friend I am helping</option>
+            <option value="my small business">My small business</option>
+            <option value="my non-profit organization">My non-profit organization</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-when">How soon do you need it?</label>
+          <select id="f-when">
+            <option value="">No particular deadline</option>
+            <option value="This is urgent — I need help within the next 30 days, so please flag any emergency or same-week programs.">Urgent — within 30 days</option>
+            <option value="I need help within the next two to three months.">Within a few months</option>
+            <option value="I am planning ahead and can wait for programs with longer application cycles.">Planning ahead</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="q" id="qual-label">Which of these describe your situation?</div>
+        <div class="hint">Tick everything. Each one unlocks funding closed to everyone else — this is where most members leave money behind.</div>
+        <div class="chips" role="group" aria-labelledby="qual-label" id="f-quals">
+          <label class="chip"><input type="checkbox" value="a veteran"> Veteran</label>
+          <label class="chip"><input type="checkbox" value="a senior aged 60 or over"> Senior 60+</label>
+          <label class="chip"><input type="checkbox" value="living with a disability"> Disability</label>
+          <label class="chip"><input type="checkbox" value="a single parent"> Single parent</label>
+          <label class="chip"><input type="checkbox" value="a low-income household"> Low income</label>
+          <label class="chip"><input type="checkbox" value="unemployed or recently laid off"> Unemployed</label>
+          <label class="chip"><input type="checkbox" value="a student or in job training"> Student</label>
+          <label class="chip"><input type="checkbox" value="a caregiver for a family member"> Caregiver</label>
+          <label class="chip"><input type="checkbox" value="a cancer patient or survivor"> Cancer patient</label>
+          <label class="chip"><input type="checkbox" value="facing a medical crisis"> Medical crisis</label>
+          <label class="chip"><input type="checkbox" value="a survivor of domestic violence"> DV survivor</label>
+          <label class="chip"><input type="checkbox" value="currently or formerly homeless"> Housing crisis</label>
+          <label class="chip"><input type="checkbox" value="a member of a minority group"> Minority</label>
+          <label class="chip"><input type="checkbox" value="a woman-owned business"> Woman-owned business</label>
+          <label class="chip"><input type="checkbox" value="a member of a tribal nation"> Tribal member</label>
+          <label class="chip"><input type="checkbox" value="living in a rural area"> Rural</label>
+        </div>
+      </div>
+
+      <div class="duo">
+        <div class="field">
+          <label for="f-amount">Roughly how much would solve it?</label>
+          <input type="text" id="f-amount" placeholder="$2,400">
+        </div>
+      </div>
+
+      <label class="chip" style="align-self:flex-start">
+        <input type="checkbox" id="f-sheet" checked> Format it for a Google Sheet
+      </label>
+    </form>
+
+    <div class="guard" id="guard" role="alert" aria-live="polite">
+      <div class="label">Stop — take this out before you share it</div>
+      <p>Anything you post in a class or the Questions Channel is visible to other members.</p>
+      <ul id="guard-list"></ul>
+      <p>Remove it and the copy button unlocks. Organizations ask for these details later, on the phone, in private — never here.</p>
+    </div>
+
+    <div class="block">
+      <div class="tabs" role="tablist" aria-label="Choose a format">
+        <button type="button" class="tab" role="tab" id="tab-ai" aria-controls="panel-out" aria-selected="true" data-mode="ai">AI Researcher</button>
+        <button type="button" class="tab" role="tab" id="tab-post" aria-controls="panel-out" aria-selected="false" data-mode="post">Questions Channel</button>
+        <button type="button" class="tab" role="tab" id="tab-class" aria-controls="panel-out" aria-selected="false" data-mode="class">Read out in class</button>
+      </div>
+      <div id="panel-out" role="tabpanel" aria-labelledby="tab-ai">
+        <pre class="result" id="result">Fill in the questions above and your request appears here.</pre>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="copy">Copy this</button>
+        <button type="button" class="btn ghost" id="reset">Start over</button>
+        <span class="msg" id="msg" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-s">♠</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">06</span>
+    </div>
+  </article>
+
+  <!-- ==================== 07 THREE WAYS ==================== -->
+  <article class="sheet" id="p07" data-nav="Three ways to get one" data-q="Where do I actually get my call sheet?">
+    <div class="runhead">
+      <span class="left">05 · Three ways</span>
+      <span class="right">Try all three</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Your options</div>
+      <h2>Three ways. <em>Use all of them.</em></h2>
+      <p class="lede">These are not alternatives to choose between. Each one finds organizations the others miss, and members who use all three end up with the deepest lists.</p>
+    </div>
+
+    <div class="stack">
+      <div class="kard blue">
+        <div class="num">01</div>
         <h3>Join a Call Sheet Class</h3>
-        <p>A live class where the team walks you through what a call sheet is, how it is built, and how to use it once you have it. You can watch it being done rather than reading about it.</p>
-        <p>If there is time after the class, team members will build call sheets for members live. They will take down your <strong>problem, your ZIP code and your state</strong> — so have all three ready before you join.</p>
-        <p class="best-for"><strong>Best when:</strong> you are new, or something about your situation is complicated and you want a human being to look at it.</p>
+        <p>A live class where the team explains what a call sheet is, how it is built, and how to use it. If there is time afterwards, team members build sheets for members live — they will take down your <strong>problem, your ZIP code and your state</strong>, so have all three ready.</p>
+        <p><strong>Best when</strong> you are new, or your situation is complicated and you want a person to look at it.</p>
       </div>
-
-      <div class="card">
-        <div class="card-tag">Way two</div>
+      <div class="kard yellow">
+        <div class="num">02</div>
         <h3>Use the AI Researcher app</h3>
-        <p>Our own AI tool, built for this community. Enter your ZIP code and your problem, and it builds your list and gives it to you as a spreadsheet you can download.</p>
-        <p>It is the fastest of the three — you can have a sheet in minutes, at 2am, without waiting for anyone. You can also run it again and again with different wording and compare what comes back.</p>
-        <p class="best-for"><strong>Best when:</strong> you want a list right now, or you want several lists for several problems.</p>
+        <p>Our own AI tool, built for this community and loaded with Matthew Lesko's research. Enter your ZIP code and your problem, and it builds your list as a spreadsheet you can download.</p>
+        <p><strong>Best when</strong> you want a list right now, at 2am, without waiting — or you want several lists for several problems.</p>
       </div>
-
-      <div class="card">
-        <div class="card-tag">Way three</div>
+      <div class="kard green">
+        <div class="num">03</div>
         <h3>Ask in the Questions Channel</h3>
-        <p>Post your request and a team member will build a call sheet for you and post it back, usually as a shareable spreadsheet with notes about your specific situation.</p>
-        <p>You can ask more than one question, and you can ask for more than one sheet — just make each request a separate post for a separate problem.</p>
-        <p class="best-for"><strong>Best when:</strong> you want a human-checked list and you are happy to wait for a reply. Also the right place for follow-up questions.</p>
+        <p>Post your request and a team member builds a call sheet for you, usually as a shareable spreadsheet with notes on your situation. Ask as many questions as you like — one post per problem.</p>
+        <p><strong>Best when</strong> you want a human-checked list and can wait for a reply. Also the right place for follow-ups.</p>
       </div>
     </div>
 
-    <div class="note">
-      <h3>Do all three, in this order</h3>
-      <ol class="numbered">
-        <li><strong>Run the AI Researcher first.</strong> It costs you nothing but a few minutes and gives you a list to react to. Reacting to a list is far easier than starting from a blank page.</li>
-        <li><strong>Bring that list to a Call Sheet Class or an AI Workshop.</strong> Now you have something specific to ask about: "number 14 has no phone number", "I don't understand what number 8 means". This is the fastest way to learn.</li>
-        <li><strong>Post the leftovers in the Questions Channel.</strong> Anything still unclear, and anything the AI could not find, goes there for a team member to dig into.</li>
+    <div class="callout">
+      <div class="label">Do all three, in this order</div>
+      <ol class="steps">
+        <li><strong>Run the AI Researcher first.</strong> It costs minutes and gives you a list to react to — far easier than starting from a blank page.</li>
+        <li><strong>Bring that list to a class.</strong> Now you have something specific to ask: "number 14 has no phone number", "I don't understand number 8". Fastest way to learn.</li>
+        <li><strong>Post the leftovers in the Questions Channel.</strong> Anything still unclear, or anything the AI could not find.</li>
       </ol>
     </div>
 
-    <div class="note good">
-      <h3>Nervous about showing up? Come anyway.</h3>
-      <p>Please do not let discomfort keep you from asking for help. Every person in that room came because they needed something, and nobody is judging you.</p>
-      <p>And if you would rather not be seen or recognised, that is completely fine — <mark>use an avatar picture instead of a photo, and a different display name</mark>. Turn your camera off. Type your question in the chat instead of speaking it. You will get exactly the same help.</p>
+    <div class="callout green">
+      <div class="label navy">Nervous about showing up? Come anyway.</div>
+      <p>Everyone in that room came because they needed something. Nobody is judging you. And if you would rather not be recognised — <strong>use an avatar picture and a different display name</strong>, keep your camera off, type in the chat instead of speaking. You get exactly the same help.</p>
       <p>The only thing that stops you getting a call sheet is not asking for one.</p>
     </div>
-  </section>
 
-  <!-- ============ COLUMNS REFERENCE ============ -->
-  <section class="step" id="columns">
-    <div class="step-head">
-      <div class="step-label">Reference</div>
-      <h2>What a complete call sheet contains</h2>
-      <p class="step-kicker">This is the column set our team uses. If your sheet is missing these, it is not finished — ask for the missing pieces.</p>
+    <div class="sheet-foot">
+      <span class="suit suit-h">♥</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">07</span>
+    </div>
+  </article>
+
+  <!-- ==================== 08 COLUMNS ==================== -->
+  <article class="sheet" id="p08" data-nav="The fourteen columns" data-q="What should a good call sheet contain?">
+    <div class="runhead">
+      <span class="left">06 · The columns</span>
+      <span class="right">What "complete" looks like</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Quality check</div>
+      <h2>Fourteen columns. <em>Nothing missing.</em></h2>
+      <p class="lede">This is the column set our team uses. If your sheet is missing these, it is not finished — ask for the missing pieces.</p>
     </div>
 
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Column</th>
-            <th scope="col">Why you need it</th>
-          </tr>
-        </thead>
+        <thead><tr><th>#</th><th>Column</th><th>Why you need it</th></tr></thead>
         <tbody>
-          <tr><td class="num">01</td><td class="col-name">Name of organization</td><td class="why">Who you are calling. Say it back to them when they answer.</td></tr>
-          <tr><td class="num">02</td><td class="col-name">Website</td><td class="why">The full link. Your first stop for checking the sheet is right.</td></tr>
-          <tr><td class="num">03</td><td class="col-name">Email address</td><td class="why">Your backup when nobody picks up the phone.</td></tr>
-          <tr><td class="num">04</td><td class="col-name">Phone number</td><td class="why">With the direct extension if there is one — it skips the switchboard.</td></tr>
-          <tr><td class="num">05</td><td class="col-name">Contact person</td><td class="why">A name to ask for gets you past the front desk.</td></tr>
-          <tr><td class="num">06</td><td class="col-name">Eligibility requirements</td><td class="why">Whether you qualify. Read this before dialling so you don't waste a call.</td></tr>
-          <tr><td class="num">07</td><td class="col-name">Area requirements</td><td class="why">Which counties or ZIP codes they serve. This is why your ZIP matters.</td></tr>
-          <tr><td class="num">08</td><td class="col-name">Dates of eligibility</td><td class="why">Application windows and deadlines. Some open once a year.</td></tr>
-          <tr><td class="num">09</td><td class="col-name">Services available</td><td class="why">What they actually do, in plain words.</td></tr>
-          <tr><td class="num">10</td><td class="col-name">Dollar value of free services</td><td class="why">Free help has a price tag. Counselling, training and legal aid are worth real money.</td></tr>
-          <tr><td class="num">11</td><td class="col-name">Grants or loans available</td><td class="why">Money you keep versus money you repay. Know which you are applying for.</td></tr>
-          <tr><td class="num">12</td><td class="col-name">Maximum amount</td><td class="why">Lets you sort the list and call the biggest ones first.</td></tr>
-          <tr><td class="num">13</td><td class="col-name">Things to consider before applying</td><td class="why">The catches — restrictions, waiting lists, documents you'll need.</td></tr>
-          <tr><td class="num">14</td><td class="col-name">30-second call script</td><td class="why">Exactly what to say when they answer. Removes the hardest part of the call.</td></tr>
+          <tr><td class="n">01</td><td class="k">Organization</td><td class="v">Who you are calling. Say it back when they answer.</td></tr>
+          <tr><td class="n">02</td><td class="k">Website</td><td class="v">Full link. Your first stop for checking the sheet is right.</td></tr>
+          <tr><td class="n">03</td><td class="k">Email</td><td class="v">Your backup when nobody picks up.</td></tr>
+          <tr><td class="n">04</td><td class="k">Phone</td><td class="v">With the direct extension — it skips the switchboard.</td></tr>
+          <tr><td class="n">05</td><td class="k">Contact person</td><td class="v">A name to ask for gets you past the front desk.</td></tr>
+          <tr><td class="n">06</td><td class="k">Eligibility</td><td class="v">Whether you qualify. Read before dialling.</td></tr>
+          <tr><td class="n">07</td><td class="k">Area served</td><td class="v">Which counties or ZIPs. This is why your ZIP matters.</td></tr>
+          <tr><td class="n">08</td><td class="k">Dates</td><td class="v">Application windows. Some open once a year.</td></tr>
+          <tr><td class="n">09</td><td class="k">Services</td><td class="v">What they actually do, in plain words.</td></tr>
+          <tr><td class="n">10</td><td class="k">Value of free help</td><td class="v">Counselling, training and legal aid are worth real money.</td></tr>
+          <tr><td class="n">11</td><td class="k">Grant or loan</td><td class="v">Money you keep versus money you repay.</td></tr>
+          <tr><td class="n">12</td><td class="k">Maximum amount</td><td class="v">Lets you sort and call the biggest ones first.</td></tr>
+          <tr><td class="n">13</td><td class="k">Things to consider</td><td class="v">The catches — restrictions, waiting lists, documents.</td></tr>
+          <tr><td class="n">14</td><td class="k">30-second script</td><td class="v">Exactly what to say. Removes the hardest part of the call.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="note">
-      <h3>Two habits that separate good sheets from great ones</h3>
+    <div class="callout">
+      <div class="label">Two habits that separate good sheets from great ones</div>
       <ul class="plain">
-        <li><strong>Ask for 25 organizations, not 10.</strong> A realistic response rate means most calls end in "no" or "not right now". Twenty-five names is roughly what it takes to find the two or three that say yes.</li>
-        <li><strong>Ask for a mix of sources.</strong> Government offices, non-profits, private foundations, corporate giving programs and niche organizations for your specific situation. A sheet that is all government agencies is missing half the money.</li>
+        <li><strong>Ask for 25 organizations, not 10.</strong> Most calls end in "no" or "not right now". Twenty-five is roughly what it takes to find the two or three that say yes.</li>
+        <li><strong>Ask for a mix of sources.</strong> Government, non-profit, private foundations, corporate giving and niche organizations. A sheet that is all government agencies is missing half the money.</li>
       </ul>
     </div>
-  </section>
 
-  <!-- ============ STEP 3 — CHECK IT ============ -->
-  <section class="step" id="step-3">
-    <div class="step-head">
-      <div class="step-label">Step 3</div>
-      <h2>Check the sheet before you call</h2>
-      <p class="step-kicker">Ten minutes of checking saves you an afternoon of dead numbers.</p>
+    <div class="sheet-foot">
+      <span class="suit suit-d">♦</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">08</span>
+    </div>
+  </article>
+
+  <!-- ==================== 09 CHECK IT ==================== -->
+  <article class="sheet" id="p09" data-nav="Check before you call" data-q="How do I check it before I start calling?">
+    <div class="runhead">
+      <span class="left">07 · Verify</span>
+      <span class="right">Ten minutes well spent</span>
     </div>
 
-    <div class="note warn">
-      <h3>AI can make mistakes — and phone numbers are where it makes them most</h3>
-      <p>AI tools are extremely good at finding organizations you would never have heard of. They are much less reliable at getting the contact details exactly right. Independent testing has found that <mark>roughly a third of phone numbers produced by AI assistants do not match the organization's own published number.</mark></p>
-      <p>That does not make the tool useless — it makes verification part of the job. A wrong number is a two-minute fix, not a reason to throw the list away.</p>
+    <div class="block">
+      <div class="eyebrow">Before you dial</div>
+      <h2>Check the sheet. <em>AI can make mistakes.</em></h2>
+      <p class="lede">AI tools are excellent at finding organizations you would never have heard of. They are much less reliable at getting the contact details exactly right.</p>
     </div>
 
-    <div class="prose">
-      <h3>Your ten-minute check</h3>
-      <ul class="ticks">
-        <li><strong>Open the website column first.</strong> If the link is dead or goes somewhere unrelated, treat everything in that row as unverified.</li>
-        <li><strong>Compare the phone number to the one on the organization's own contact page.</strong> If they differ, the website's number is the right one.</li>
-        <li><strong>Check the area column against your ZIP code.</strong> Programs that don't serve your county cannot help you, no matter how good they sound.</li>
-        <li><strong>Check the dates.</strong> A program whose window closed last month goes to the bottom of the list, with a note to call back.</li>
-        <li><strong>Mark anything you couldn't confirm.</strong> Don't delete it — flag it and bring it to a class.</li>
+    <div class="callout red">
+      <div class="label">Phone numbers are where AI slips most</div>
+      <p>Independent testing has found that <strong>roughly a third of phone numbers produced by AI assistants do not match the organization's own published number.</strong> That does not make the tool useless — it makes checking part of the job. A wrong number is a two-minute fix, not a reason to throw the list away.</p>
+    </div>
+
+    <div class="kard blue">
+      <span class="chip-label">Your ten-minute check</span>
+      <ul class="arrows">
+        <li><strong>Open the website first.</strong> Dead link or unrelated page? Treat the whole row as unverified.</li>
+        <li><strong>Compare the phone number</strong> to the one on the organization's own contact page. If they differ, the website wins.</li>
+        <li><strong>Check the area</strong> against your ZIP code. Programs that don't serve your county cannot help you.</li>
+        <li><strong>Check the dates.</strong> A closed window goes to the bottom, with a note to call back.</li>
+        <li><strong>Flag what you couldn't confirm.</strong> Don't delete it — bring it to a class.</li>
       </ul>
-
-      <div class="note">
-        <h3>Found something wrong? Bring it to a class.</h3>
-        <p>If a name looks off, a phone number doesn't work, or a listing simply doesn't make sense — <strong>do not just cross it out and move on</strong>. Join a Call Sheet Class, an AI Workshop or a Q&amp;A and ask a grant coach about it.</p>
-        <p>Nine times out of ten there is a real organization behind a garbled listing, and a coach can find the correct details in seconds. That is exactly what the classes are for, and it is never a silly question.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ STEP 4 — WORK THE LIST ============ -->
-  <section class="step" id="step-4">
-    <div class="step-head">
-      <div class="step-label">Step 4</div>
-      <h2>Work the list</h2>
-      <p class="step-kicker">A call sheet sitting in your downloads folder has never paid anybody's rent.</p>
     </div>
 
-    <div class="prose">
-      <h3>Before you start dialling</h3>
-      <ul class="plain">
-        <li><strong>Gather your paperwork.</strong> Copies of the bills you need help with, proof of income, proof of address, ID. Most programs verify these during the application, and having them within reach turns a callback into a same-call decision.</li>
-        <li><strong>Read the call script in column 14 out loud once.</strong> The first call is the hardest. The tenth is easy.</li>
-        <li><strong>Block out time.</strong> Most of these offices keep normal business hours and many close for lunch. Two hours on a Tuesday morning beats ten minutes here and there.</li>
+    <div class="callout green">
+      <div class="label navy">Found something wrong? Bring it to a class.</div>
+      <p>If a name looks off, a number doesn't work, or a listing makes no sense, <strong>do not just cross it out</strong>. Join a Call Sheet Class, an AI Workshop or a Q&amp;A and ask a grant coach. Nine times out of ten there is a real organization behind a garbled listing, and a coach finds the correct details in seconds. That is exactly what the classes are for.</p>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-c">♣</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">09</span>
+    </div>
+  </article>
+
+  <!-- ==================== 10 WORK THE LIST ==================== -->
+  <article class="sheet" id="p10" data-nav="Work the list" data-q="What do I say when I actually call?">
+    <div class="runhead">
+      <span class="left">08 · Making the calls</span>
+      <span class="right">Where the money happens</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Working it</div>
+      <h2>A sheet in your downloads has <em>never paid anyone's rent.</em></h2>
+    </div>
+
+    <div class="kard yellow">
+      <span class="chip-label">Before you dial</span>
+      <ul class="arrows">
+        <li><strong>Gather your paperwork.</strong> The bills, proof of income, proof of address, ID. Having them to hand turns a callback into a same-call decision.</li>
+        <li><strong>Read the script in column 14 out loud once.</strong> The first call is the hardest. The tenth is easy.</li>
+        <li><strong>Block out time.</strong> Most offices keep business hours and close for lunch. Two hours on a Tuesday morning beats ten minutes here and there.</li>
       </ul>
+    </div>
 
-      <h3>On every call, ask these four questions</h3>
-      <ol class="numbered">
-        <li><strong>"Do I qualify for this, based on where I live and my situation?"</strong> Get a yes or no before anything else.</li>
-        <li><strong>"What exactly do I need to send you, and by when?"</strong> Write down every document and every deadline.</li>
-        <li><strong>"Is there anyone else you'd recommend I call?"</strong> This is the highest-value question on the whole sheet. People who work at these organizations know every other program in the county. One call routinely produces three more names that were on nobody's list.</li>
-        <li><strong>"Can I have your name and a direct number?"</strong> A named contact makes every follow-up call ten times easier.</li>
+    <div class="block">
+      <div class="label">Ask these four on every call</div>
+      <ol class="steps">
+        <li><strong>"Do I qualify, based on where I live and my situation?"</strong> Get a yes or no first.</li>
+        <li><strong>"What exactly do I send you, and by when?"</strong> Write down every document and deadline.</li>
+        <li><strong>"Is there anyone else you'd recommend I call?"</strong> The highest-value question on the sheet. These people know every other program in the county — one call routinely produces three more names.</li>
+        <li><strong>"Can I have your name and a direct number?"</strong> Makes every follow-up ten times easier.</li>
       </ol>
+    </div>
 
-      <h3>Write down the outcome of every single call</h3>
-      <p>Add columns to your sheet and fill them in as you go. This record becomes as valuable as the original list — it stops you calling twice, and it is what you bring to a class when you want help figuring out the next move.</p>
-
+    <div class="block">
+      <div class="label">Write down every outcome</div>
+      <p>Add these columns to your sheet as you go. This record becomes as valuable as the original list.</p>
       <div class="table-wrap">
-        <table class="log-demo">
-          <thead>
-            <tr>
-              <th scope="col">Date called</th>
-              <th scope="col">Who I spoke to</th>
-              <th scope="col">Outcome</th>
-              <th scope="col">Next step</th>
-              <th scope="col">Follow up on</th>
-            </tr>
-          </thead>
+        <table class="log-tbl">
+          <thead><tr><th>Date</th><th>Who</th><th>Outcome</th><th>Next step</th><th>Follow up</th></tr></thead>
           <tbody>
-            <tr><td>Aug 12</td><td>Denise, ext. 214</td><td>Qualify — app sent</td><td>Return form + last 2 bills</td><td>Aug 15</td></tr>
+            <tr><td>Aug 12</td><td>Denise, x214</td><td>Qualify — app sent</td><td>Return form + 2 bills</td><td>Aug 15</td></tr>
             <tr><td>Aug 12</td><td>Voicemail</td><td>No answer</td><td>Call back AM</td><td>Aug 13</td></tr>
-            <tr><td>Aug 12</td><td>Marcus, intake</td><td>Wrong county</td><td>Gave me 2 other numbers</td><td>Added to sheet</td></tr>
+            <tr><td>Aug 12</td><td>Marcus, intake</td><td>Wrong county</td><td>Gave 2 other numbers</td><td>Added to sheet</td></tr>
           </tbody>
         </table>
       </div>
-
-      <div class="note good">
-        <h3>Expect "no" — it is part of the process, not a verdict on you</h3>
-        <p>Funds run out. Windows close. Criteria shift. A "no" from one organization tells you nothing about the next one, and a program that has no money in August may have a new budget in October. Ask when to call back, note it down, and move to the next line.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ STEP 5 — REPEAT ============ -->
-  <section class="step" id="step-5">
-    <div class="step-head">
-      <div class="step-label">Step 5</div>
-      <h2>Do it again. And again.</h2>
-      <p class="step-kicker">This is the part that works, and it is the part most people quit before reaching.</p>
     </div>
 
-    <div class="prose">
-      <p>One call sheet is a start. It is not the method. The members who get funded are the ones who repeat this loop over and over:</p>
+    <div class="callout green">
+      <div class="label navy">Expect "no" — it is the process, not a verdict on you</div>
+      <p>Funds run out, windows close, criteria shift. A "no" from one organization tells you nothing about the next. A program with no money in August may have a new budget in October. Ask when to call back, note it, move to the next line.</p>
+    </div>
 
-      <ul class="plain">
-        <li><strong>Repeat across your problems.</strong> A separate sheet for every distinct need. Four problems means four sheets.</li>
-        <li><strong>Repeat with different wording.</strong> Run the AI Researcher again asking for "emergency financial assistance", then "hardship funds", then "utility assistance programs". Different words surface different organizations. This costs you nothing.</li>
-        <li><strong>Repeat across the classes.</strong> Attend more than one. Every coach has a different angle, and the questions other members ask will find money you didn't know to look for.</li>
-        <li><strong>Repeat your calls.</strong> Every name that said "not right now" goes on a callback list with a date. New budget cycles open constantly.</li>
-        <li><strong>Repeat every few months.</strong> Programs launch, close and change all year. A sheet built in spring is out of date by autumn — build a fresh one.</li>
+    <div class="sheet-foot">
+      <span class="suit suit-s">♠</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">10</span>
+    </div>
+  </article>
+
+  <!-- ==================== 11 REPEAT ==================== -->
+  <article class="sheet" id="p11" data-nav="Do it again" data-q="What do I do after the first round?">
+    <div class="runhead">
+      <span class="left">09 · Repeat</span>
+      <span class="right">The part that works</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Keep going</div>
+      <h2>Do it again. <em>And again.</em></h2>
+      <p class="lede">One call sheet is a start. It is not the method. The members who get funded are the ones who repeat this loop over and over.</p>
+    </div>
+
+    <div class="kard red">
+      <span class="chip-label">Five ways to repeat</span>
+      <ul class="arrows">
+        <li><strong>Across your problems.</strong> A separate sheet for every distinct need. Four problems, four sheets.</li>
+        <li><strong>With different wording.</strong> Run the AI Researcher again for "emergency financial assistance", then "hardship funds", then "utility assistance programs". Different words surface different organizations — and it costs you nothing.</li>
+        <li><strong>Across the classes.</strong> Attend more than one. Every coach has a different angle, and other members' questions find money you didn't know to look for.</li>
+        <li><strong>Your calls.</strong> Every "not right now" goes on a callback list with a date. New budget cycles open constantly.</li>
+        <li><strong>Every few months.</strong> Programs launch, close and change all year. A sheet built in spring is stale by autumn.</li>
       </ul>
-
-      <p>There is no cap on how many call sheets you can request, how many classes you can attend, or how many questions you can post. <mark>Use all of it.</mark></p>
-    </div>
-  </section>
-
-  <!-- ============ PRIVACY ============ -->
-  <section class="step" id="privacy">
-    <div class="step-head">
-      <div class="step-label">Reference</div>
-      <h2>Protecting yourself</h2>
     </div>
 
-    <div class="note warn">
-      <h3>Never post personal details in a class or in the Questions Channel</h3>
-      <p>Both are visible to other members. Whatever you post, assume a stranger will read it.</p>
+    <div class="callout">
+      <div class="label">There is no limit</div>
+      <p>No cap on how many call sheets you request, how many classes you attend, or how many questions you post. <strong>Use all of it.</strong></p>
+    </div>
+
+    <div class="sheet-foot">
+      <span class="suit suit-h">♥</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">11</span>
+    </div>
+  </article>
+
+  <!-- ==================== 12 SAFETY ==================== -->
+  <article class="sheet" id="p12" data-nav="Protecting yourself" data-q="How do I keep myself safe and private?">
+    <div class="runhead">
+      <span class="left">10 · Safety &amp; privacy</span>
+      <span class="right">Precise, not identifiable</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Protect yourself</div>
+      <h2>Be precise. <em>Stay private.</em></h2>
+    </div>
+
+    <div class="kard red">
+      <span class="chip-label">Never post these</span>
+      <p>Classes and the Questions Channel are visible to other members. Assume a stranger will read whatever you post.</p>
       <ul class="crosses">
-        <li>Your phone number</li>
-        <li>Your email address</li>
-        <li>Your street address</li>
-        <li>Your Social Security number</li>
+        <li>Phone number · email address · street address</li>
+        <li>Social Security number · date of birth</li>
         <li>Bank account or card details</li>
-        <li>Your date of birth</li>
         <li>Photos of any document or ID</li>
         <li>Case, claim or benefit numbers</li>
       </ul>
-      <p><strong>What is safe to share:</strong> your city, your state, your ZIP code, and a description of your problem. That is genuinely all anyone needs to build you a good call sheet.</p>
     </div>
 
-    <div class="prose">
-      <h3>Being as precise as possible without being identifiable</h3>
-      <p>Precision helps you. Personal details don't. "A disabled veteran in ZIP 43604 needing roughly $2,400 for back rent" is precise, useful, and identifies nobody. Every organization on your sheet will ask for the private details later — on the phone, directly, where they belong.</p>
+    <div class="kard green">
+      <span class="chip-label">Safe to share</span>
+      <p>Your city, your state, your ZIP code, and a description of your problem. That is genuinely all anyone needs to build you a good call sheet.</p>
+      <p><em class="rq">"A disabled veteran in ZIP 43604 needing roughly $2,400 for back rent"</em> is precise, useful, and identifies nobody. Every organization will ask for the private details later — on the phone, where they belong.</p>
+    </div>
 
-      <h3>Use an avatar if you'd rather not be recognised</h3>
-      <p>You are allowed to protect your privacy and still get help. Set a picture that isn't your face and a display name that isn't your legal name. Keep your camera off in classes. None of this reduces the support you receive, and nobody will ask you why.</p>
+    <div class="callout blue">
+      <div class="label navy">Use an avatar if you'd rather not be recognised</div>
+      <p>Set a picture that isn't your face and a display name that isn't your legal name. Keep your camera off. None of this reduces the support you get, and nobody will ask why.</p>
+    </div>
 
-      <h3>Know the difference between a real program and a scam</h3>
-      <p>Everything on a proper call sheet is an organization <em>you</em> contact. That is the safe direction. Be suspicious of anything that contacts <em>you</em> first:</p>
+    <div class="callout red">
+      <div class="label">Real program, or scam?</div>
+      <p>Everything on a proper call sheet is an organization <strong>you</strong> contact. That is the safe direction. Be suspicious of anything that contacts <strong>you</strong> first:</p>
       <ul class="crosses">
-        <li><strong>Anyone charging a fee to apply for a grant.</strong> Government grant applications are free.</li>
-        <li><strong>Anyone calling to say you have won a grant you never applied for.</strong> Government agencies do not do this.</li>
-        <li><strong>Anyone asking for payment by gift card, wire transfer, cash reload card or cryptocurrency.</strong> No legitimate program is paid this way.</li>
-        <li><strong>Anyone phoning, texting or messaging you out of the blue for your Social Security number, bank details or a photo of your ID.</strong></li>
+        <li>Anyone charging a fee to apply. Government grant applications are free.</li>
+        <li>Anyone saying you won a grant you never applied for.</li>
+        <li>Anyone wanting payment by gift card, wire transfer or cryptocurrency.</li>
+        <li>Anyone calling out of the blue for your Social Security number or bank details.</li>
       </ul>
-      <p>If something feels wrong, stop and bring it to a class before you act on it. You can report grant scams to the Federal Trade Commission at <strong>1-877-382-4357</strong>.</p>
-    </div>
-  </section>
-
-  <!-- ============ BOOKMARKS ============ -->
-  <section class="step" id="bookmarks">
-    <div class="step-head">
-      <div class="step-label">Reference</div>
-      <h2>Bookmark every question you ask</h2>
+      <p>If it feels wrong, stop and bring it to a class. Report grant scams to the Federal Trade Commission at <strong>1-877-382-4357</strong>.</p>
     </div>
 
-    <div class="prose">
-      <p>When you post in the Questions Channel, <strong>bookmark your own post straight away</strong>. Replies can arrive days later, and the channel moves fast — without a bookmark you will lose track of where your answer went.</p>
-      <p>Your bookmarks live under your personal settings, in <strong>Bookmarked Posts</strong>. Everything you have saved is in one place, so your call sheets, the coach's notes and your follow-up questions stay together.</p>
+    <div class="sheet-foot">
+      <span class="suit suit-d">♦</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">12</span>
+    </div>
+  </article>
+
+  <!-- ==================== 13 BOOKMARKS + CLOSE ==================== -->
+  <article class="sheet" id="p13" data-nav="Bookmarks &amp; last word" data-q="How do I find my questions again afterwards?">
+    <div class="runhead">
+      <span class="left">11 · Bookmarks &amp; last word</span>
+      <span class="right">Don't lose your answers</span>
+    </div>
+
+    <div class="block">
+      <div class="eyebrow">Keeping track</div>
+      <h2>Bookmark <em>every question you ask.</em></h2>
+      <p class="lede">Replies can arrive days later and the channel moves fast. Without a bookmark you will lose track of where your answer went.</p>
+      <p>Your bookmarks live under your personal settings, in <strong>Bookmarked Posts</strong> — so your call sheets, the coach's notes and your follow-ups all stay in one place.</p>
+    </div>
+
+    <div class="kard blue">
       <ul class="ticks">
-        <li>Bookmark the post the moment you publish it, before you close the tab.</li>
-        <li>Bookmark the reply containing your finished call sheet too — that is the link you will keep coming back to.</li>
-        <li>Bookmark other members' questions when the answer is useful to you. Somebody has usually already asked your question.</li>
+        <li>Bookmark your post the moment you publish it, before you close the tab.</li>
+        <li>Bookmark the reply containing your finished call sheet — that is the link you'll keep returning to.</li>
+        <li>Bookmark other members' questions when the answer helps you. Somebody has usually already asked yours.</li>
       </ul>
-      <p>There is fuller guidance on writing a good question pinned inside the Questions Channel itself. Read it once before your first post — it will save you a round trip.</p>
+      <p>There is fuller guidance on writing a good question pinned inside the Questions Channel. Read it once before your first post.</p>
     </div>
-  </section>
 
-  <!-- ============ DISCLAIMER ============ -->
-  <footer class="disclaimer">
-    <h2>A note about AI, and about asking for help</h2>
-    <p><strong>AI can make mistakes.</strong> The AI Researcher and every other AI tool can misspell an organization's name, produce a phone number that rings nowhere, list a program that closed last year, or state an eligibility rule slightly wrong. Always check a listing against the organization's own website before you rely on it.</p>
-    <p><strong>If anything is unclear or looks wrong, come and ask.</strong> Join a Call Sheet Class, an AI Workshop, a Q&amp;A or a drop-in clinic and put it in front of a grant coach. Bring the sheet, point at the row, and ask. Getting the correct details lined up is exactly what our coaches are here for, and there is no such thing as a question that is too small.</p>
-    <p>Nothing on this page is legal or financial advice, and no organization listed on any call sheet is guaranteed to have funds available for you.</p>
-    <p class="sign-off">Now go build your first sheet. 💛</p>
-    <p class="sources">Community sources: Lesko Help Call Sheet Classes, AI Workshops, and the call sheets built by the team in the Questions Channel. External sources: <a href="https://consumer.ftc.gov/articles/government-grant-scams">FTC — Government Grant Scams</a>, <a href="https://www.grants.gov/learn-grants/grant-fraud/grant-fraud-prevention.html">Grants.gov — Grant Fraud Prevention</a>, <a href="https://www.211.org/">United Way 211</a>, <a href="https://www.seerinteractive.com/insights/ai-models-provide-incorrect-phone-numbers-36-of-the-time-heres-what-you-can-do">Seer Interactive — AI phone number accuracy study</a>.</p>
-  </footer>
+    <div class="suitbar"><span class="y"></span><span class="r"></span><span class="g"></span><span class="b"></span></div>
 
-</div>
+    <div class="callout">
+      <div class="label">A note about AI, and about asking for help</div>
+      <p><strong>AI can make mistakes.</strong> The AI Researcher and every other AI tool can misspell an organization's name, give a number that rings nowhere, list a program that closed last year, or state an eligibility rule slightly wrong. Always check a listing against the organization's own website before relying on it.</p>
+      <p><strong>If anything is unclear or looks wrong, come and ask.</strong> Join a Call Sheet Class, an AI Workshop, a Q&amp;A or a drop-in clinic and put it in front of a grant coach. Bring the sheet, point at the row, ask. Getting the correct details lined up is exactly what our coaches are here for, and there is no such thing as a question that is too small.</p>
+      <p>Nothing in this guide is legal or financial advice, and no organization on any call sheet is guaranteed to have funds available for you.</p>
+    </div>
+
+    <p class="lede" style="font-family:var(--serif);font-size:1.3rem;color:var(--navy)">Now go build your first sheet. <span style="color:var(--red)">♥</span></p>
+
+    <div class="sheet-foot">
+      <span class="suit suit-c">♣</span>
+      <span class="mid">Lesko Help · Call Sheets</span>
+      <span class="pg">13</span>
+    </div>
+  </article>
+
+</main>
+
+<nav class="pager" id="pager" aria-label="Page navigation">
+  <button type="button" class="pg-btn prev" id="prev"><span class="dir">← Previous</span><span class="to"></span></button>
+  <button type="button" class="pg-btn up" id="up">↑ Contents</button>
+  <button type="button" class="pg-btn next" id="next"><span class="dir">Next →</span><span class="to"></span></button>
+</nav>
+
+<button type="button" class="to-top" id="totop" aria-label="Back to top">↑</button>
 
 <script>
   (function () {
     "use strict";
-
     var el = function (id) { return document.getElementById(id); };
 
-    var fCity   = el("f-city"),
-        fZip    = el("f-zip"),
-        fTopic  = el("f-topic"),
-        fDetail = el("f-detail"),
-        fWho    = el("f-who"),
-        fWhen   = el("f-when"),
-        fAmount = el("f-amount"),
-        fSheet  = el("f-sheet"),
-        fQuals  = el("f-quals"),
-        result  = el("result"),
-        copyBtn = el("copy"),
-        resetBtn= el("reset"),
-        msg     = el("msg"),
-        guard   = el("guard"),
-        guardList = el("guard-list");
+    /* When this file is opened on its own, nothing has set the layout
+       viewport and phones fall back to 980px. Harmless no-op when the
+       host page already provides the tag. */
+    if (!document.querySelector('meta[name="viewport"]')) {
+      var mv = document.createElement("meta");
+      mv.name = "viewport";
+      mv.content = "width=device-width, initial-scale=1";
+      document.head.appendChild(mv);
+    }
 
-    var mode = "ai";
+    /* ============ paging ============ */
 
-    /* ---------- privacy guard ---------- */
+    var sheets = Array.prototype.slice.call(document.querySelectorAll(".sheet"));
+    var ids = sheets.map(function (s) { return s.id; });
+    var TOC_ID = "p02";
+    var current = 0;
+
+    /* build the contents list from the sheets themselves, so it can never
+       drift out of sync with the pages that actually exist */
+    var toc = el("toc");
+    sheets.forEach(function (s, i) {
+      if (s.id === "p01" || s.id === TOC_ID) { return; }
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "toc-row";
+      b.setAttribute("data-go", s.id);
+      b.innerHTML =
+        '<span class="t-num">' + String(i - 1).padStart(2, "0") + '</span>' +
+        '<span class="t-q"></span>' +
+        '<span class="t-pg">p. ' + s.id.slice(1) + '</span>';
+      b.querySelector(".t-q").textContent = s.getAttribute("data-q");
+      toc.appendChild(b);
+    });
+
+    function show(idx, push) {
+      if (idx < 0 || idx >= sheets.length) { return; }
+      sheets[current].classList.remove("on");
+      current = idx;
+      sheets[current].classList.add("on");
+
+      var pct = sheets.length > 1 ? (current / (sheets.length - 1)) * 100 : 0;
+      el("pf").style.width = pct + "%";
+
+      var prev = el("prev"), next = el("next");
+      prev.disabled = current === 0;
+      next.disabled = current === sheets.length - 1;
+      prev.querySelector(".to").textContent = current > 0 ? sheets[current - 1].getAttribute("data-nav") : "";
+      next.querySelector(".to").textContent = current < sheets.length - 1 ? sheets[current + 1].getAttribute("data-nav") : "";
+
+      el("up").textContent = sheets[current].id === TOC_ID ? "↑ Top" : "↑ Contents";
+
+      if (push && location.hash !== "#" + sheets[current].id) {
+        history.pushState(null, "", "#" + sheets[current].id);
+      }
+      window.scrollTo({ top: 0, behavior: "auto" });
+      sheets[current].setAttribute("tabindex", "-1");
+      sheets[current].focus({ preventScroll: true });
+    }
+
+    function goto(id, push) {
+      var i = ids.indexOf(id);
+      if (i >= 0) { show(i, push); }
+    }
+
+    function fromHash() {
+      var h = location.hash.replace("#", "");
+      goto(ids.indexOf(h) >= 0 ? h : "p01", false);
+    }
+
+    toc.addEventListener("click", function (e) {
+      var row = e.target.closest(".toc-row");
+      if (row) { goto(row.getAttribute("data-go"), true); }
+    });
+
+    el("prev").addEventListener("click", function () { show(current - 1, true); });
+    el("next").addEventListener("click", function () { show(current + 1, true); });
+    el("up").addEventListener("click", function () {
+      if (sheets[current].id === TOC_ID) { window.scrollTo({ top: 0, behavior: "smooth" }); }
+      else { goto(TOC_ID, true); }
+    });
+    el("btn-toc").addEventListener("click", function () { goto(TOC_ID, true); });
+    document.querySelectorAll('.lockup').forEach(function (a) {
+      a.addEventListener("click", function (e) { e.preventDefault(); goto(TOC_ID, true); });
+    });
+
+    window.addEventListener("popstate", fromHash);
+
+    document.addEventListener("keydown", function (e) {
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { return; }
+      if (e.key === "ArrowRight") { show(current + 1, true); }
+      else if (e.key === "ArrowLeft") { show(current - 1, true); }
+      else if (e.key === "Escape") { goto(TOC_ID, true); }
+    });
+
+    var totop = el("totop");
+    window.addEventListener("scroll", function () {
+      totop.classList.toggle("on", window.scrollY > 400);
+    }, { passive: true });
+    totop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+    fromHash();
+
+    /* ============ privacy guard ============ */
 
     /* A street number is followed by a capitalised name, so requiring capitals
        keeps phrases like "2 bedroom apartment" or "3 new drive belts" clear. */
@@ -1053,10 +1321,10 @@
     var UNIT_NO = /\b(?:apt|apartment|unit|suite|ste)\.?\s*#?\s*\d{1,5}[A-Za-z]?\b/i;
 
     var PATTERNS = [
-      { label: "a phone number",    re: /(?:\+?1[\s._-]?)?\(?\d{3}\)?[\s._-]?\d{3}[\s._-]?\d{4}\b/ },
-      { label: "an email address",  re: /[\w.+-]+@[\w-]+\.[A-Za-z]{2,}/ },
+      { label: "a phone number", re: /(?:\+?1[\s._-]?)?\(?\d{3}\)?[\s._-]?\d{3}[\s._-]?\d{4}\b/ },
+      { label: "an email address", re: /[\w.+-]+@[\w-]+\.[A-Za-z]{2,}/ },
       { label: "a Social Security number", re: /\b\d{3}-\d{2}-\d{4}\b/ },
-      { label: "a street address",  test: function (t) { return STREET.test(t) || UNIT_NO.test(t); } },
+      { label: "a street address", test: function (t) { return STREET.test(t) || UNIT_NO.test(t); } },
       { label: "a card or account number", re: /\b(?:\d[ -]?){13,19}\b/ }
     ];
 
@@ -1064,165 +1332,134 @@
       var found = [];
       for (var i = 0; i < PATTERNS.length; i++) {
         var p = PATTERNS[i];
-        var hit = p.test ? p.test(text) : p.re.test(text);
-        if (hit) { found.push(p.label); }
+        if (p.test ? p.test(text) : p.re.test(text)) { found.push(p.label); }
       }
       return found;
     }
 
-    /* ---------- helpers ---------- */
+    /* ============ request builder ============ */
 
-    function topicText() {
-      var v = fTopic.value;
-      if (!v || v === "__other") { return ""; }
-      return v;
-    }
+    var fCity = el("f-city"), fZip = el("f-zip"), fTopic = el("f-topic"),
+        fDetail = el("f-detail"), fWho = el("f-who"), fWhen = el("f-when"),
+        fAmount = el("f-amount"), fSheet = el("f-sheet"), fQuals = el("f-quals"),
+        result = el("result"), copyBtn = el("copy"), msg = el("msg"),
+        guard = el("guard"), guardList = el("guard-list");
 
-    function qualsList() {
-      var boxes = fQuals.querySelectorAll("input:checked");
-      var out = [];
-      for (var i = 0; i < boxes.length; i++) { out.push(boxes[i].value); }
-      return out;
-    }
-
-    function joinNicely(arr) {
-      if (arr.length === 0) { return ""; }
-      if (arr.length === 1) { return arr[0]; }
-      return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
-    }
+    var mode = "ai";
 
     var COLUMNS =
-      "1) Name of organization\n" +
-      "2) Website (full URL link)\n" +
-      "3) Contact email address\n" +
-      "4) Contact phone number (with direct extension if listed)\n" +
-      "5) Contact person\n" +
-      "6) Eligibility requirements\n" +
-      "7) Area requirements\n" +
-      "8) Dates of eligibility\n" +
-      "9) Description of the services available\n" +
-      "10) Dollar value of the free services\n" +
-      "11) Grants or loans available\n" +
-      "12) Maximum amount of grants and/or loans available\n" +
-      "13) Important things to consider before applying\n" +
-      "14) 30-second call script";
+      "1) Name of organization\n2) Website (full URL link)\n3) Contact email address\n" +
+      "4) Contact phone number (with direct extension if listed)\n5) Contact person\n" +
+      "6) Eligibility requirements\n7) Area requirements\n8) Dates of eligibility\n" +
+      "9) Description of the services available\n10) Dollar value of the free services\n" +
+      "11) Grants or loans available\n12) Maximum amount of grants and/or loans available\n" +
+      "13) Important things to consider before applying\n14) 30-second call script";
 
     var SHEET_BLOCK =
       "Present the results in CSV format so I can paste them into a Google Sheet. " +
       "Use only the ^ symbol as the custom separator for splitting text into columns, " +
       "and make sure every URL is a clickable link once it is transferred into the sheet.";
 
-    /* ---------- builders ---------- */
+    function joinNicely(a) {
+      if (!a.length) { return ""; }
+      if (a.length === 1) { return a[0]; }
+      return a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+    }
+
+    function readForm() {
+      var boxes = fQuals.querySelectorAll("input:checked"), quals = [];
+      for (var i = 0; i < boxes.length; i++) { quals.push(boxes[i].value); }
+      return {
+        city: fCity.value.trim(),
+        zip: fZip.value.trim(),
+        topic: (fTopic.value && fTopic.value !== "__other") ? fTopic.value : "",
+        detail: fDetail.value.trim(),
+        who: fWho.value,
+        when: fWhen.value,
+        amount: fAmount.value.trim(),
+        quals: quals,
+        sheet: fSheet.checked
+      };
+    }
 
     function buildAI(d) {
-      var lines = [];
-      var where = d.city ? d.city : "my area";
+      var out = [];
+      var where = d.city || "my area";
       var zipBit = d.zip ? " (ZIP code " + d.zip + ")" : "";
       var need = d.detail || d.topic || "financial assistance";
 
-      lines.push(
-        "Please create a Call Sheet of 25 government offices and non-profit organizations in " +
+      out.push("Please create a Call Sheet of 25 government offices and non-profit organizations in " +
         where + zipBit + " that offer grants, grant-like funds, or any other type of financial " +
-        "assistance for the following need: " + need
-      );
-      lines.push("");
+        "assistance for the following need: " + need);
+      out.push("");
 
-      var ctx = [];
-      ctx.push("This is for " + d.who + ".");
+      var ctx = ["This is for " + d.who + "."];
       if (d.topic && d.detail) { ctx.push("The category of help is " + d.topic + "."); }
       if (d.quals.length) {
         ctx.push("Please prioritise programs open to someone who is " + joinNicely(d.quals) +
-                 ", including any funding reserved specifically for those groups.");
+          ", including any funding reserved specifically for those groups.");
       }
       if (d.amount) { ctx.push("The amount that would resolve this is approximately " + d.amount + "."); }
       if (d.when) { ctx.push(d.when); }
-      lines.push(ctx.join(" "));
-      lines.push("");
-
-      lines.push(
-        "Include government, non-profit, private, corporate and niche organizations. " +
-        "I want to use this list to contact each office directly to see how they might be able to help."
-      );
-      lines.push("");
-      lines.push("Include the following columns:");
-      lines.push(COLUMNS);
-      lines.push("");
-      lines.push(
-        "Only list VERIFIED RESOURCES that are active as of today's date. If any piece of " +
-        "information is unavailable online, mark that space as N/A or Not Listed. Do not guess " +
-        "or invent phone numbers, email addresses or web links — if you are not certain a detail " +
-        "is correct, write Not Listed instead."
-      );
-      if (d.sheet) { lines.push(""); lines.push(SHEET_BLOCK); }
-
-      return lines.join("\n");
+      out.push(ctx.join(" "));
+      out.push("");
+      out.push("Include government, non-profit, private, corporate and niche organizations. " +
+        "I want to use this list to contact each office directly to see how they might be able to help.");
+      out.push("");
+      out.push("Include the following columns:");
+      out.push(COLUMNS);
+      out.push("");
+      out.push("Only list VERIFIED RESOURCES that are active as of today's date. If any piece of " +
+        "information is unavailable online, mark that space as N/A or Not Listed. Do not guess or " +
+        "invent phone numbers, email addresses or web links — if you are not certain a detail is " +
+        "correct, write Not Listed instead.");
+      if (d.sheet) { out.push(""); out.push(SHEET_BLOCK); }
+      return out.join("\n");
     }
 
     function buildPost(d) {
-      var lines = [];
-      lines.push("Hi team — could I please have a call sheet?");
-      lines.push("");
-      lines.push("The one problem: " + (d.detail || d.topic || "—"));
-      if (d.topic && d.detail) { lines.push("Category: " + d.topic); }
-      lines.push("City and state: " + (d.city || "—"));
-      lines.push("ZIP code: " + (d.zip || "—"));
-      lines.push("This is for: " + d.who);
-      if (d.quals.length) { lines.push("Things that may qualify me: " + joinNicely(d.quals)); }
-      if (d.amount) { lines.push("Amount that would solve it: " + d.amount); }
-      if (d.when) { lines.push("Timing: " + d.when); }
-      lines.push("");
-      lines.push("Thank you so much!");
-      return lines.join("\n");
+      var out = ["Hi team — could I please have a call sheet?", ""];
+      out.push("The one problem: " + (d.detail || d.topic || "—"));
+      if (d.topic && d.detail) { out.push("Category: " + d.topic); }
+      out.push("City and state: " + (d.city || "—"));
+      out.push("ZIP code: " + (d.zip || "—"));
+      out.push("This is for: " + d.who);
+      if (d.quals.length) { out.push("Things that may qualify me: " + joinNicely(d.quals)); }
+      if (d.amount) { out.push("Amount that would solve it: " + d.amount); }
+      if (d.when) { out.push("Timing: " + d.when); }
+      out.push("", "Thank you so much!");
+      return out.join("\n");
     }
 
     function buildClass(d) {
-      var lines = [];
-      lines.push("WHAT TO SAY OR TYPE IN CLASS");
-      lines.push("(read this out, or paste it into the chat)");
-      lines.push("");
-      lines.push("My problem:       " + (d.detail || d.topic || "—"));
-      lines.push("My ZIP code:      " + (d.zip || "—"));
-      lines.push("My city + state:  " + (d.city || "—"));
-      if (d.quals.length) { lines.push("About me:         " + joinNicely(d.quals)); }
-      lines.push("");
-      lines.push("BEFORE YOU JOIN, HAVE THESE THREE READY:");
-      lines.push("  [ ] The one problem, in a single sentence");
-      lines.push("  [ ] Your ZIP code");
-      lines.push("  [ ] Your city and state");
-      lines.push("");
-      lines.push("REMEMBER:");
-      lines.push("  - An avatar picture and a different display name are fine.");
-      lines.push("  - Camera off is fine. The chat box is fine.");
-      lines.push("  - Never say your phone number, email or address out loud.");
-      return lines.join("\n");
+      var out = ["WHAT TO SAY OR TYPE IN CLASS", "(read this out, or paste it into the chat)", ""];
+      out.push("My problem:       " + (d.detail || d.topic || "—"));
+      out.push("My ZIP code:      " + (d.zip || "—"));
+      out.push("My city + state:  " + (d.city || "—"));
+      if (d.quals.length) { out.push("About me:         " + joinNicely(d.quals)); }
+      out.push("", "HAVE THESE THREE READY BEFORE YOU JOIN:");
+      out.push("  [ ] The one problem, in a single sentence");
+      out.push("  [ ] Your ZIP code");
+      out.push("  [ ] Your city and state");
+      out.push("", "REMEMBER:");
+      out.push("  - An avatar picture and a different display name are fine.");
+      out.push("  - Camera off is fine. The chat box is fine.");
+      out.push("  - Never say your phone number, email or address out loud.");
+      return out.join("\n");
     }
 
-    /* ---------- render ---------- */
-
     function render() {
-      var d = {
-        city:   fCity.value.trim(),
-        zip:    fZip.value.trim(),
-        topic:  topicText(),
-        detail: fDetail.value.trim(),
-        who:    fWho.value,
-        when:   fWhen.value,
-        amount: fAmount.value.trim(),
-        quals:  qualsList(),
-        sheet:  fSheet.checked
-      };
-
-      /* only free-text fields can leak identity — ZIP and city are safe by design */
+      var d = readForm();
       var found = scan(d.detail + " " + d.amount + " " + d.city);
 
       if (found.length) {
         guard.classList.add("on");
         guardList.innerHTML = "";
-        for (var i = 0; i < found.length; i++) {
+        found.forEach(function (f) {
           var li = document.createElement("li");
-          li.textContent = "We spotted what looks like " + found[i] + ".";
+          li.textContent = "We spotted what looks like " + f + ".";
           guardList.appendChild(li);
-        }
+        });
         copyBtn.disabled = true;
         copyBtn.textContent = "Copying blocked";
       } else {
@@ -1232,19 +1469,14 @@
         copyBtn.textContent = "Copy this";
       }
 
-      var ready = d.city || d.zip || d.detail || d.topic;
-      if (!ready) {
-        result.textContent = "Fill in the questions above and your request will appear here.";
+      if (!(d.city || d.zip || d.detail || d.topic)) {
+        result.textContent = "Fill in the questions above and your request appears here.";
         copyBtn.disabled = true;
         return;
       }
 
-      if (mode === "ai")        { result.textContent = buildAI(d); }
-      else if (mode === "post") { result.textContent = buildPost(d); }
-      else                      { result.textContent = buildClass(d); }
+      result.textContent = mode === "ai" ? buildAI(d) : mode === "post" ? buildPost(d) : buildClass(d);
     }
-
-    /* ---------- wiring ---------- */
 
     var form = el("clarifier");
     form.addEventListener("input", function () { msg.textContent = ""; render(); });
@@ -1252,42 +1484,34 @@
     form.addEventListener("submit", function (e) { e.preventDefault(); });
 
     var tabs = document.querySelectorAll(".tab");
-    for (var t = 0; t < tabs.length; t++) {
-      tabs[t].addEventListener("click", function (e) {
-        for (var j = 0; j < tabs.length; j++) { tabs[j].setAttribute("aria-selected", "false"); }
+    tabs.forEach(function (t) {
+      t.addEventListener("click", function (e) {
+        tabs.forEach(function (x) { x.setAttribute("aria-selected", "false"); });
         e.currentTarget.setAttribute("aria-selected", "true");
         mode = e.currentTarget.getAttribute("data-mode");
         msg.textContent = "";
         render();
       });
-    }
+    });
 
     copyBtn.addEventListener("click", function () {
       var text = result.textContent;
-      function done() { msg.textContent = "Copied — now paste it where you need it."; }
-      function fail() { msg.textContent = "Couldn't copy automatically. Select the text above and copy it."; }
-
+      function ok() { msg.textContent = "Copied"; }
+      function no() { msg.textContent = "Select the text above and copy it"; }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, fail);
+        navigator.clipboard.writeText(text).then(ok, no);
       } else {
         try {
           var ta = document.createElement("textarea");
-          ta.value = text;
-          ta.style.position = "fixed";
-          ta.style.opacity = "0";
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand("copy");
-          document.body.removeChild(ta);
-          done();
-        } catch (err) { fail(); }
+          ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); document.body.removeChild(ta); ok();
+        } catch (err) { no(); }
       }
     });
 
-    resetBtn.addEventListener("click", function () {
-      form.reset();
-      msg.textContent = "";
-      render();
+    el("reset").addEventListener("click", function () {
+      form.reset(); msg.textContent = ""; render();
     });
 
     render();

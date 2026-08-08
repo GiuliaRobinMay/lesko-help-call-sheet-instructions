@@ -1,56 +1,95 @@
-# Lesko Help — Call Sheets instruction page
+# Lesko Help — Call Sheets
 
-A single-page guide for Lesko Help members on what a call sheet is, how to get
-one, and how to work it.
+A member guide to building call sheets, built as a **paginated document** in
+the Lesko Help house style.
 
 ## Contents
 
-- `index.html` — the whole page. Self-contained: all CSS and JS are inline,
-  no external requests, no build step. Open it in a browser or publish it as-is.
+- `index.html` — the whole thing. Self-contained: all CSS and JS inline, no
+  external requests, no build step, no dependencies.
 
-## What's on the page
+## How it works
 
-1. **What a call sheet is** — plain-language definition, built from ZIP code +
-   one problem.
-2. **The golden rule** — one problem, one call sheet. Never combine.
-3. **Step 1 — Get clear on your problem.** Contains the **Problem Clarifier**,
-   an interactive form: answering the questions builds a ready-to-paste request
-   in three formats (AI Researcher prompt, Questions Channel post, class
-   script).
-4. **Step 2 — Three ways to get a call sheet.** Call Sheet Classes, the AI
-   Researcher app, the Questions Channel — with a recommended order for using
-   all three.
-5. **The 14 columns** a complete call sheet contains, matching the column set
-   the team already uses.
-6. **Step 3 — Check it before you call.** AI verification pass.
-7. **Step 4 — Work the list.** Call prep, the four questions to ask on every
-   call, and a call-log template.
-8. **Step 5 — Do it again.** Repetition as the method.
-9. **Protecting yourself** — what never to post, avatars, scam red flags.
-10. **Bookmarking** your questions.
-11. **Disclaimer** — AI can make mistakes; bring problems to a class.
+The guide is 13 short pages, shown one at a time — not one long scroll.
 
-## The privacy guard
+- **Page 01** cover
+- **Page 02** contents — eleven questions, each linking to its answer
+- **Pages 03–13** one answer per page
 
-The Problem Clarifier scans the free-text fields for phone numbers, email
-addresses, Social Security numbers, street addresses and card/account numbers.
-If it finds any, it shows a warning naming what it found and **disables the
-copy button** until the text is removed. ZIP code and city are treated as safe
-and are never flagged.
+Navigation:
 
-Everything runs client-side. No data leaves the browser.
+| Control | What it does |
+| --- | --- |
+| Contents rows | jump to that page |
+| `☰ Contents` in the top bar | back to the index from anywhere |
+| Prev / Next at the foot | move a page, labelled with the destination |
+| `↑ Contents` / `↑ Top` | back up |
+| Floating `↑` | appears after 400px of scroll |
+| `←` `→` keys | previous / next page |
+| `Esc` | back to contents |
+
+Each page has a `#p01`…`#p13` hash, so pages are linkable and the browser
+back button works. Printing expands every page with page breaks between them.
+
+The contents list is generated at runtime from the pages themselves, reading
+each `<article>`'s `data-q` (the question) and `data-nav` (the short label).
+Add or remove an `<article class="sheet">` and the index, the page numbering
+and the prev/next labels all follow automatically.
+
+## Brand
+
+Colours sampled directly from the Lesko Help document series:
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--cream` | `#F9F6EB` | the sheet |
+| `--band` | `#F4EBD4` | callouts, alternating table rows |
+| `--navy` | `#0E1A2A` | card borders, table headers, buttons |
+| `--ink` | `#2A3548` | body text |
+| `--red` | `#E63946` | italic serif emphasis, mono labels, numbers |
+| `--yellow` | `#FDC82F` | badges, chips, the `?` |
+| `--blue` `--green` | `#2B3FA0` `#4FA84F` | suits, tints, semantics |
+
+Card-suit tints (`--tint-blue/yellow/red/green`) fill the numbered cards, same
+as the printed documents. Serif for display with red italic emphasis, sans for
+body, mono for labels and running heads.
+
+**Light only** — no dark mode, by request. The page paints its own background
+so it holds on any host.
+
+## The Problem Clarifier (page 06)
+
+An interactive form whose questions are the seven clarifying questions from
+page 05. Answering them generates a ready-to-paste request in three formats:
+
+1. **AI Researcher** — a full prompt using the team's 14-column structure,
+   plus an instruction not to invent contact details
+2. **Questions Channel** — a short post
+3. **Read out in class** — a script with the problem / ZIP / state checklist
+
+### Privacy guard
+
+The free-text fields are scanned for phone numbers, email addresses, Social
+Security numbers, street addresses and card numbers. On a hit it names what it
+found and **disables the copy button** until the text is removed. ZIP code and
+city are treated as safe and never flagged.
+
+The street-address check requires a capitalised street name, so ordinary
+phrases like "2 bedroom apartment" or "3 new drive belts" don't trip it.
+
+Everything is client-side; no data leaves the browser.
 
 ## Editing
 
-Common changes and where to make them:
-
 | Change | Where |
 | --- | --- |
-| Colors | the `:root` token blocks at the top of the `<style>` |
-| The 14 columns | the `#columns` table, and the `COLUMNS` string in the script |
+| Colours | the `:root` block at the top of `<style>` |
+| Add / remove / reorder a page | the `<article class="sheet">` elements — the index follows |
+| A page's index question | that article's `data-q` |
+| A page's prev/next label | that article's `data-nav` |
+| The 14 columns | the `#p08` table, and the `COLUMNS` string in the script |
 | Clarifier questions | the `<form id="clarifier">` markup |
-| Qualifier chips | the `#f-quals` chip list |
-| Generated wording | `buildAI()`, `buildPost()`, `buildClass()` in the script |
+| Generated wording | `buildAI()`, `buildPost()`, `buildClass()` |
 
-The page ships light and dark palettes defined as tokens, so it renders
-correctly whichever theme a member's device is set to.
+Page numbers in the running feet are written into the markup; if you reorder
+pages, update the `.pg` values and the `id`s to match.

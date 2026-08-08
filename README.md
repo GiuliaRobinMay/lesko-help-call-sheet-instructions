@@ -1,63 +1,42 @@
 # Lesko Help — Your Call Sheet
 
-A single-page guide for LeskoHelp members: what a call sheet is, how to get one, and
-what to do with it. Same playful playing-card design as the Grant Roadmap and
+A single page for LeskoHelp members: what a call sheet is, why it matters, and the
+three ways to get one. Same playful playing-card design as the Grant Roadmap and
 Onboarding apps.
 
 Open `index.html` in a browser. No build step, no server, no dependencies.
+
+## Scope — please keep it this way
+
+This page is **only about the call sheet itself**. It deliberately does not cover:
+
+- **How to build a call sheet.** Members learn that in the Call Sheet Classes and the
+  AI Workshops. Explaining it here would confuse people and duplicate the classes.
+- **How to make the calls, or how to apply.** Those are separate sections of the
+  onboarding.
+- **What columns a call sheet should contain.** Also class material.
+
+There is no request builder or application form on this page. If a member wants help
+writing their request, the answer is to join a class, ask in the Questions Channel, or
+use the AI Researcher — not to fill in a form here.
 
 ## What's on the page
 
 | # | Card | What it covers |
 |---|------|----------------|
-| 01 | 📋 What a call sheet is | A list of places to phone, built from ZIP code + one problem |
-| 02 | ☝️ One problem = one call sheet | The golden rule, with a good and a bad example |
-| 03 | 🎯 Get clear before you ask | The seven questions to answer first |
-| 04 | ✍️ Let us write your request | **The tool** — see below |
-| 05 | 🗺️ Three ways to get your call sheet | Class · AI Researcher · Questions Channel |
-| 06 | ✅ What a good call sheet has | The 14 columns, asked for 25 organizations |
-| 07 | 🔍 Check it before you call | AI gets phone numbers wrong ~1 in 3 times |
-| 08 | ☎️ What to say when you call | Four questions, plus a call log |
-| 09 | 🔁 Then do it again | Repetition is the method |
-| 10 | 🔒 Keeping yourself safe | What never to post, avatars, scam red flags |
+| 01 | 📋 What a call sheet is | A list of places to contact, built from ZIP + state/city + one problem |
+| 02 | ⭐ Why it matters so much | Built for you, help is local, turns "where do I start" into a list |
+| 03 | ☝️ One problem = one call sheet | Never combine problems, with a good and a bad example |
+| 04 | 🎯 Know what you're asking for | Seven questions to get clear, and the three things to bring |
+| 05 | 🗺️ Three ways to get your call sheet | Class · AI Researcher · Questions Channel — try all three |
+| 06 | 🙋 Asking for your call sheet | Never share personal details, don't be shy, avatars are fine, bookmark it |
+| 07 | 🔁 Keep going | Come back, ask again, there's no limit |
+
+Then a closing note that AI can make mistakes, and to bring anything that looks wrong
+to a grant coach in a class.
 
 A **quick-jump card** sits under the header so members can go straight to what they
-need instead of scrolling, and a back-to-top button appears once they've scrolled.
-
-## The tool — "Let us write your request for you"
-
-Card 04 is interactive. A member answers the same seven questions from card 03, and the
-page builds their request in three formats, switched by tabs:
-
-- **🤖 For the AI** — the full prompt, using the team's 14-column structure, with an
-  added instruction not to invent phone numbers, emails or links
-- **💬 For the Questions Channel** — a short, tidy post
-- **🎤 To say in class** — a script with the problem / ZIP / state checklist
-
-### The privacy guard
-
-Before anything can be copied, the free-text answers are checked for phone numbers,
-email addresses, Social Security numbers, street addresses and card numbers. If one
-turns up, the page says what it found and **disables the copy button** until it's
-removed. ZIP code and city are treated as safe and never flagged.
-
-The street check requires a capitalised street name, so everyday phrases like
-"2 bedroom apartment" or "3 new drive belts" don't trip it.
-
-Everything runs in the member's own browser. Nothing is sent anywhere.
-
-## Adding the video
-
-The recording isn't wired up yet. When you have the URL, open `index.html`, find
-`VIDEO_URL` near the top of the `<script>` at the bottom, and paste it in:
-
-```js
-var VIDEO_URL = "";   // YouTube, Vimeo, Loom, Wistia or a direct .mp4
-```
-
-Share links are converted into a player automatically. Left empty, the slot shows a
-placeholder that links through to a live Call Sheet Class, so the page never looks
-broken while you're still recording.
+need, and a back-to-top button appears once they've scrolled.
 
 ## Links used
 
@@ -66,7 +45,6 @@ All buttons point at the existing spaces in the community:
 - Call Sheet Classes — `/spaces/24440881/events`
 - Lesko AI Researcher — `/spaces/24461105/page`
 - Questions Channel — `/spaces/11054387/feed`
-- Call & Application Classes — `/spaces/24366189/events`
 
 ## Design
 
@@ -79,10 +57,21 @@ Shared LeskoHelp house style, matching the Grant Roadmap and Onboarding apps:
 - Big yellow `?` marks in the background, emoji as section markers
 - Works down to small phones; respects `prefers-reduced-motion`
 
+### Two things worth copying back to the sibling apps
+
+- `overflow-x:hidden` has to be on **`html`** as well as `body`, or the background
+  `?` marks push a horizontal scrollbar. The other apps share this CSS.
+- The file declares `<meta charset="utf-8">` so the emoji survive a host that serves
+  no charset. Netlify sets the header, but nothing else guarantees it.
+
+Also note: a button size modifier must not be called `.small` — `.step-txt .small`
+already owns that name and wins on specificity, which silently turns the button into a
+full-width block with muted text. It is called `.btn-sm` here.
+
 ## Files
 
 ```
-index.html     the whole app
+index.html     the whole page
 netlify.toml   static hosting, no build
 EMBED.md       how to put it on a Mighty Networks page
 ```

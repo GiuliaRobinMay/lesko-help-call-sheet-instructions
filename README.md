@@ -35,8 +35,8 @@ use the AI Researcher — not to fill in a form here.
 Then a closing note that AI can make mistakes, and to bring anything that looks wrong
 to a grant coach in a class.
 
-A **quick-jump card** sits under the header so members can go straight to what they
-need, and a back-to-top button appears once they've scrolled.
+A back-to-top button appears once a member has scrolled. There is no jump menu — the
+page is short enough to read straight through, and a menu at the top read as clutter.
 
 ## Links used
 
@@ -45,6 +45,10 @@ All buttons point at the existing spaces in the community:
 - Call Sheet Classes — `/spaces/24440881/events`
 - Lesko AI Researcher — `/spaces/24461105/page`
 - Questions Channel — `/spaces/11054387/feed`
+
+They appear inside the "three ways" card and again as three buttons at the foot of the
+page: Call Sheet Class (red) and Questions Channel (blue) side by side, with Ask the AI
+(green) centred on its own row underneath.
 
 ## Design
 

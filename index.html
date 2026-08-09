@@ -68,23 +68,11 @@
   .btn:hover{background:var(--red-deep);transform:translateY(-1px)}
   .btn.blue{background:var(--blue)}
   .btn.blue:hover{background:var(--blue-deep)}
+  .btn.green{background:var(--green)}
+  .btn.green:hover{background:var(--green-deep)}
   /* named btn-sm, not .small — .step-txt .small already owns that name */
   .btn.btn-sm{padding:7px 15px;font-size:13px;margin-top:8px}
   .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-
-  /* ── QUICK JUMP ── */
-  .jump{
-    position:relative;z-index:1;background:#fff;border:2px solid var(--ink);border-radius:12px;
-    box-shadow:5px 5px 0 var(--ink);padding:15px 18px;margin:26px 0 30px;transform:rotate(-.3deg);
-  }
-  .jump h3{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:10px}
-  .jump-links{display:flex;flex-wrap:wrap;gap:7px}
-  .jump-links a{
-    font-family:var(--sans);font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);
-    background:var(--cream);border:1.5px solid var(--ink);border-radius:100px;padding:6px 13px;
-    transition:background .15s;
-  }
-  .jump-links a:hover{background:var(--yellow)}
 
   /* ── CARDS ── */
   .card{
@@ -188,19 +176,6 @@
       <a class="btn" href="https://lesko-help-2.mn.co/spaces/24440881/events" target="_blank" rel="noopener">Join a Call Sheet Class →</a>
     </div>
   </header>
-
-  <nav class="jump" aria-label="Jump to a section">
-    <h3>🧭 Jump to what you need</h3>
-    <div class="jump-links">
-      <a href="#what">What it is</a>
-      <a href="#why">Why it matters</a>
-      <a href="#rule">One problem, one sheet</a>
-      <a href="#clear">Know what to ask for</a>
-      <a href="#three">Three ways to get one</a>
-      <a href="#asking">Asking safely</a>
-      <a href="#again">Keep going</a>
-    </div>
-  </nav>
 
   <!-- WHAT IT IS -->
   <div class="card c-blue" id="what">
@@ -328,6 +303,9 @@
   <div class="btn-row" style="justify-content:center;margin-top:20px">
     <a class="btn" href="https://lesko-help-2.mn.co/spaces/24440881/events" target="_blank" rel="noopener">Join a Call Sheet Class →</a>
     <a class="btn blue" href="https://lesko-help-2.mn.co/spaces/11054387/feed" target="_blank" rel="noopener">Ask in the Questions Channel →</a>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:10px">
+    <a class="btn green" href="https://lesko-help-2.mn.co/spaces/24461105/page" target="_blank" rel="noopener">Ask the AI →</a>
   </div>
 
   <p class="foot-note">"My joy is helping people find money programs that make life a little easier." — Matthew Lesko</p>
